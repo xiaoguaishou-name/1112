@@ -217,11 +217,14 @@
               <el-form ref="form" :model="form" label-width="80px">
                 <div class="mHeader">
                   <el-form-item label="填报人姓名">
-                    <el-select v-model="form.region" placeholder="王五">
+                    <el-select
+                      v-model="form.name"
+                      placeholder="请选择填报人姓名"
+                    >
                       <el-input
                         placeholder="请输入姓名查询"
                         suffix-icon="el-icon-search"
-                        v-model="input2"
+                        v-model="form.name2"
                       >
                       </el-input>
                       <el-option label="张三" value="shanghai"></el-option>
@@ -230,6 +233,93 @@
                       <el-option label="谢晓" value="guangzhou"></el-option>
                       <el-option label="胡俊波" value="nanchang"></el-option>
                     </el-select>
+                  </el-form-item>
+                  <el-form-item label="填报日期">
+                    <el-date-picker
+                      v-model="form.date"
+                      type="date"
+                      placeholder="请选择填报日期"
+                    >
+                    </el-date-picker>
+                  </el-form-item>
+                </div>
+                <div class="quality-area">
+                  <div class="gHeader">
+                    <span>品质特性</span>
+                  </div>
+                  <el-form-item label="产品规模">
+                    <el-select
+                      v-model="form.product"
+                      placeholder="请选择产品规模"
+                    >
+                      <el-option label="0" value="0"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="行业地位">
+                    <el-select
+                      v-model="form.status"
+                      placeholder="请选择行业地位"
+                    >
+                      <el-option label="其他" value="0"></el-option>
+                      <el-option
+                        label="在当地销售规模处于前十"
+                        value="1"
+                      ></el-option>
+                      <el-option
+                        label="在当地销售规模处于前三"
+                        value="2"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="业务关系持续期">
+                    <el-select
+                      v-model="form.duration"
+                      placeholder="请选择业务关系持续期"
+                    >
+                      <el-option label="其他" value="0"></el-option>
+                      <el-option
+                        label="与本公司的业务关系持续2-12个月"
+                        value="1"
+                      ></el-option>
+                      <el-option
+                        label="与本公司的业务关系持续1-2年"
+                        value="3"
+                      ></el-option>
+                      <el-option
+                        label="与本公司的业务关系持续2年以上"
+                        value="5"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="业务关系强度">
+                    <el-select
+                      v-model="form.intensity"
+                      placeholder="请选择业务关系强度"
+                    >
+                      <el-option label="偶尔在本公司提货" value="1"></el-option>
+                      <el-option
+                        label="以本公司为次供货商"
+                        value="2"
+                      ></el-option>
+                      <el-option
+                        label="与本公司为主供货商"
+                        value="3"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div class="power-area">
+                  <div class="gHeader">
+                    <span>能力评价</span>
+                  </div>
+                  <el-form-item label="吸货能力">
+                    <el-radio-group v-model="radio1" text-color="#00b294">
+                      <el-radio v-model="radio1" label="40" border>40</el-radio>
+                      <el-radio v-model="radio1" label="30" border>30</el-radio>
+                      <el-radio v-model="radio1" label="20" border>20</el-radio>
+                      <el-radio v-model="radio1" label="10" border>10</el-radio>
+                      <el-radio v-model="radio1" label="5" border>5</el-radio>
+                    </el-radio-group>
                   </el-form-item>
                 </div>
               </el-form>
@@ -393,11 +483,17 @@ export default {
   name: "Supply",
   data() {
     return {
-      isShow: false,
+      isShow: true,
       form: {
-        region: "",
+        name: "",
+        name2: "",
+        date: "",
+        product: "",
+        status: "",
+        duration: "",
+        intensity: "",
       },
-      input2: "",
+      radio1:"",
     };
   },
   methods: {
@@ -1061,9 +1157,35 @@ export default {
   margin-top: 50px;
   width: 758px;
   height: 767px;
+  overflow:auto;
+}
+/* 定义滚动条的样式 */
+.container #main .main-header .entrance .entrance-main::-webkit-scrollbar{
+  width:6px;
+}
+.container #main .main-header .entrance .entrance-main::-webkit-scrollbar-thumb{
+  background: #275ba5;
+  border-radius: 6px;
 }
 .container #main .main-header .entrance .entrance-main .el-form .mHeader {
-  margin: 68px 0 28px 38px;
+  position: relative;
+  margin: 18px 0 18px 38px;
+  /* border-bottom:1px solid #184f7d; */
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .mHeader::after {
+  position: absolute;
+  z-index: 4;
+  bottom: -24px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
 }
 /* 修改elementUI的样式 */
 .container
@@ -1085,46 +1207,316 @@ export default {
   .el-form
   .mHeader
   .el-form-item__content
-  .el-select .el-input--suffix > input{
-  width: 582px;
+  .el-select
+  .el-input--suffix
+  > input {
+  width: 584px;
   height: 35px;
   background: rgba(3, 20, 46, 0.3);
   border: 1px solid #0797a7;
-  font-size:12px;
-  color:#fff;
+  font-size: 12px;
+  color: #fff;
   border-radius: 2px;
 }
 /* 下拉框样式更改设置 */
-.el-popper[x-placement^=bottom]{
-  margin-top:-2px;
+.el-popper[x-placement^="bottom"] {
+  margin-top: -2px;
 }
-.el-select-dropdown__item > span{
+.el-select-dropdown__item > span {
   font-size: 12px;
-  color:#fff;
+  color: #fff;
 }
-.el-select-dropdown{
+.el-select-dropdown {
+  z-index: 5;
   border: 1px solid #0797a7;
   border-radius: 0;
-  background: rgba(3, 20, 46, 0.3);
-  margin:0;
+  background: #072042;
+  margin: 0;
   overflow: auto;
 }
 /* 下拉搜索框样式更改设置 */
-.el-input--srefix .el-input__inner{
+.el-select-dropdown__list .el-input--suffix .el-input__inner {
   width: 560px;
   height: 31px;
-  padding-left:12px;
-  margin:2px 11px 0 11px;
+  padding-left: 12px;
+  margin: 2px 11px 0 11px;
   background: rgba(3, 20, 46, 0.3);
   border: 1px solid #0797a7;
+  color: #fff;
+  font-size: 12px;
+}
+.el-select-dropdown__list .el-input--suffix .el-input__suffix {
+  right: 20px;
 }
 /* hover选择内容效果样式更改设置 */
-.el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
   background: #113565;
 }
 /* 下拉框伪类小三角不要 */
-.el-popper .popper__arrow, .el-popper .popper__arrow::after {
-  border:none;
+.el-popper .popper__arrow,
+.el-popper .popper__arrow::after {
+  border: none;
+}
+.el-scrollbar__bar.is-horizontal,
+.el-scrollbar__bar.is-vertical {
+  height: 0;
+  width: 0;
+  top: 0;
+  left: 0;
+}
+/* 日期行修改样式 */
+.el-date-editor.el-input {
+  width: 584px;
+  height: 35px;
+}
+.el-date-editor.el-input .el-input__inner {
+  background: rgba(3, 20, 46, 0.3);
+  border: 1px solid #0797a7;
+  font-size: 12px;
+  color: #fff;
+}
+/* 日期表样式修改 */
+/* .el-picker-panel.el-date-picker{
+  color:#fff;
+  background: #072042;
+} */
+/* 品质区域样式 */
+.container #main .main-header .entrance .entrance-main .el-form .quality-area {
+  position: relative;
+  margin-top: 37px;
+  margin-left: 48px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -24px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .gHeader {
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .gHeader::before {
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+/* 修改elementUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item:nth-last-of-type(2)
+  .el-form-item__label {
+  line-height: 24px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item:nth-last-of-type(1)
+  .el-form-item__label {
+  line-height: 24px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input {
+  width: 584px;
+  height: 35px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input
+  .el-input__inner {
+  color: #fff;
+  font-size: 12px;
+  background: rgba(3, 20, 46, 0.3);
+  border: 1px solid #0797a7;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .quality-area
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input
+  .el-input__inner
+  .el-input__suffix {
+  top: 10px;
+}
+/* 能力评价区域 */
+.container #main .main-header .entrance .entrance-main .el-form .power-area {
+  position: relative;
+  margin-top: 37px;
+  margin-left: 48px;
+}
+/* .container #main .main-header .entrance .entrance-main .el-form .power-area::after{
+  position: absolute;
+  z-index: 4;
+  left:-12px;
+  bottom: -24px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+} */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .gHeader {
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .gHeader::before {
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+/* 修改elementUI的样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+/* .container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group{
+  width: 579px;
+  height: 265px;
+} */
+.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio{
+  width: 187px;
+  height: 127px;
+  margin-right:2px;
+  color:#fff;
+  font-size: 14px;
+  border:1px solid #2294d5;
+}
+.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio .el-radio__input .el-radio__inner{
+  border-radius: 0;
+}
+.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio.is-checked{
+  background: linear-gradient(#0d96b1 0%, #00b294 100%);
+}
+.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio:nth-of-type(4){
+  width: 187px;
+  height: 127px;
+  margin-left:0;
+  margin-right:2px;
+  margin-top:10px;
 }
 /* 填报区域底部样式 */
 .container #main .main-header .entrance .entrance-bottom {
