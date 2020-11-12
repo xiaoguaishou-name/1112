@@ -220,7 +220,7 @@
                     <el-select v-model="form.region" placeholder="王五">
                       <el-input
                         placeholder="请输入姓名查询"
-                        prefix-icon="el-icon-search"
+                        suffix-icon="el-icon-search"
                         v-model="input2"
                       >
                       </el-input>
@@ -395,9 +395,9 @@ export default {
     return {
       isShow: false,
       form: {
-        region: "",  
+        region: "",
       },
-      input2:"",
+      input2: "",
     };
   },
   methods: {
@@ -460,7 +460,7 @@ export default {
 /* 左侧栏 */
 .container #main .main-header .left {
   position: absolute;
-  left: 44px;
+  left: 34px;
   top: 31px;
   width: 453px;
   height: 609px;
@@ -721,7 +721,7 @@ export default {
   height: 609px;
   position: absolute;
   top: 31px;
-  left: 523px;
+  left: 513px;
 }
 .container #main .main-header .mainItem .customer {
   box-sizing: border-box;
@@ -1063,7 +1063,68 @@ export default {
   height: 767px;
 }
 .container #main .main-header .entrance .entrance-main .el-form .mHeader {
-  margin: 68px 0 28px 0;
+  margin: 68px 0 28px 38px;
+}
+/* 修改elementUI的样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .mHeader
+  .el-form-item__label {
+  font-size: 12px;
+  color: #fff;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .mHeader
+  .el-form-item__content
+  .el-select .el-input--suffix > input{
+  width: 582px;
+  height: 35px;
+  background: rgba(3, 20, 46, 0.3);
+  border: 1px solid #0797a7;
+  font-size:12px;
+  color:#fff;
+  border-radius: 2px;
+}
+/* 下拉框样式更改设置 */
+.el-popper[x-placement^=bottom]{
+  margin-top:-2px;
+}
+.el-select-dropdown__item > span{
+  font-size: 12px;
+  color:#fff;
+}
+.el-select-dropdown{
+  border: 1px solid #0797a7;
+  border-radius: 0;
+  background: rgba(3, 20, 46, 0.3);
+  margin:0;
+  overflow: auto;
+}
+/* 下拉搜索框样式更改设置 */
+.el-input--srefix .el-input__inner{
+  width: 560px;
+  height: 31px;
+  padding-left:12px;
+  margin:2px 11px 0 11px;
+  background: rgba(3, 20, 46, 0.3);
+  border: 1px solid #0797a7;
+}
+/* hover选择内容效果样式更改设置 */
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover{
+  background: #113565;
+}
+/* 下拉框伪类小三角不要 */
+.el-popper .popper__arrow, .el-popper .popper__arrow::after {
+  border:none;
 }
 /* 填报区域底部样式 */
 .container #main .main-header .entrance .entrance-bottom {
@@ -1073,7 +1134,6 @@ export default {
   height: 73px;
   background: #09264e;
   box-shadow: 0px 0px 40px 0px rgba(12, 21, 48, 0.3);
-  /* margin:auto; */
 }
 .container #main .main-header .entrance .entrance-bottom .el-button--default {
   width: 84px;
@@ -1100,7 +1160,7 @@ export default {
   width: 453px;
   height: 609px;
   position: absolute;
-  left: 1423px;
+  left: 1413px;
   top: 31px;
 }
 .container #main .main-header .right .right-item1 .diversification {
@@ -1473,8 +1533,8 @@ export default {
   width: 1830px;
   height: 273px;
   position: absolute;
-  top: 665px;
-  left: 44px;
+  top: 655px;
+  left: 34px;
   display: flex;
   justify-content: space-between;
 }
@@ -1508,7 +1568,7 @@ export default {
   display: flex;
   justify-content: space-around;
   box-sizing: border-box;
-  height: 224px;
+  height: 229px;
   border: 1px solid #235464;
 }
 .container #main .footer .footer-item .coverage .chart {
@@ -1541,7 +1601,7 @@ export default {
 .container #main .footer .footer-item .coverage .chart .money {
   box-sizing: border-box;
   position: absolute;
-  bottom: 17px;
+  bottom: 20px;
   left: -30px;
   width: 200px;
   height: 47px;
@@ -1565,7 +1625,7 @@ export default {
 .container #main .footer .footer-item .coverage .chart .group {
   box-sizing: border-box;
   position: absolute;
-  bottom: 17px;
+  bottom: 20px;
   left: -30px;
   width: 200px;
   height: 47px;
@@ -1588,7 +1648,7 @@ export default {
 }
 /* 底部中间栏样式 */
 .container #main .footer .footer-item2 .coverage2 {
-  height: 224px;
+  height: 229px;
   box-sizing: border-box;
   border: 1px solid #235464;
   display: flex;
