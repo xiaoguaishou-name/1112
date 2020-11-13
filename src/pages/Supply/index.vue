@@ -215,6 +215,7 @@
             </div>
             <div class="entrance-main">
               <el-form ref="form" :model="form" label-width="80px">
+                <!-- 头部区域 -->
                 <div class="mHeader">
                   <el-form-item label="填报人姓名">
                     <el-select
@@ -243,6 +244,7 @@
                     </el-date-picker>
                   </el-form-item>
                 </div>
+                <!-- 品质特性区域 -->
                 <div class="quality-area">
                   <div class="gHeader">
                     <span>品质特性</span>
@@ -308,18 +310,180 @@
                     </el-select>
                   </el-form-item>
                 </div>
+                <!-- 能力评价区域 -->
                 <div class="power-area">
                   <div class="gHeader">
                     <span>能力评价</span>
                   </div>
                   <el-form-item label="吸货能力">
-                    <el-radio-group v-model="radio1" text-color="#00b294">
-                      <el-radio v-model="radio1" label="40" border>40</el-radio>
-                      <el-radio v-model="radio1" label="30" border>30</el-radio>
-                      <el-radio v-model="radio1" label="20" border>20</el-radio>
-                      <el-radio v-model="radio1" label="10" border>10</el-radio>
-                      <el-radio v-model="radio1" label="5" border>5</el-radio>
+                    <el-radio-group v-model="form.power" text-color="#00b294">
+                      <el-radio label="40" border>40</el-radio>
+                      <el-radio label="30" border>30</el-radio>
+                      <el-radio label="20" border>20</el-radio>
+                      <el-radio label="10" border>10</el-radio>
+                      <el-radio label="5" border>5</el-radio>
+                      <div class="forty">
+                        <div class="forty-item">时间周期（季度）</div>
+                        <div class="forty-item">碳品吸货能力>=8000吨；</div>
+                        <div class="forty-item">轻质化煤焦油1号>=3000吨；</div>
+                        <div class="forty-item">轻质化煤焦油2号>=800吨；</div>
+                      </div>
+                      <div class="thirty">
+                        <div class="thirty-item">时间周期（季度）</div>
+                        <div class="thirty-item">碳品吸货能力>=6000吨；</div>
+                        <div class="thirty-item">轻质化煤焦油1号>=2000吨；</div>
+                        <div class="thirty-item">轻质化煤焦油2号>=500吨；</div>
+                      </div>
+                      <div class="twenty">
+                        <div class="twenty-item">时间周期（季度）</div>
+                        <div class="twenty-item">碳品吸货能力>=4000吨；</div>
+                        <div class="twenty-item">轻质化煤焦油1号>=1000吨；</div>
+                        <div class="twenty-item">轻质化煤焦油2号>=300吨；</div>
+                      </div>
+                      <div class="ten">
+                        <div class="ten-item">时间周期（季度）</div>
+                        <div class="ten-item">碳品吸货能力>=2000吨；</div>
+                        <div class="ten-item">轻质化煤焦油1号>=500吨；</div>
+                        <div class="ten-item">轻质化煤焦油2号>=100吨；</div>
+                      </div>
+                      <div class="five">
+                        <div class="five-item">时间周期（季度）</div>
+                        <div class="five-item">碳品吸货能力&lt;2000吨</div>
+                        <div class="five-item">轻质化煤焦油1号&lt;500吨；</div>
+                        <div class="five-item">轻质化煤焦油2号&lt;100吨；</div>
+                      </div>
                     </el-radio-group>
+                  </el-form-item>
+                </div>
+                <!-- 均衡购货评价区域 -->
+                <div class="shop-area">
+                  <div class="gHeader">
+                    <span>均衡购货评价</span>
+                  </div>
+                  <el-form-item label="均衡购货能力">
+                    <el-radio-group v-model="form.shop">
+                      <el-radio :label="20">20：每月购货天数>=20天；</el-radio>
+                      <el-radio :label="15">15：每月购货天数>=15天；</el-radio>
+                      <el-radio :label="10">10：每月购货天数>=10天；</el-radio>
+                      <el-radio :label="5">5：每月购货天数&lt;10天；</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </div>
+                <!-- 信用评价区域 -->
+                <div class="credit-area">
+                  <div class="gHeader">
+                    <span>信用评价</span>
+                  </div>
+                  <el-form-item label="现金比例">
+                    <el-input v-model="form.score" placeholder="得分"></el-input>
+                    <span>得分= (现金金额/销售总金额)*15</span>
+                  </el-form-item>
+                  <el-form-item label="配合度">
+                    <el-select
+                      v-model="form.acceptance"
+                      placeholder="默认为0"
+                    >
+                      <el-option label="其他" value="0"></el-option>
+                      <el-option
+                        label="承兑汇票补充证明材料在规定期限内（一周内）返回"
+                        value="3"
+                      ></el-option>
+                    </el-select>
+                    <el-select
+                      v-model="form.contract"
+                      placeholder="默认为0"
+                    >
+                      <el-option label="其他" value="0"></el-option>
+                      <el-option
+                        label="合同、发货确认单据等在规定期限内（一周内）返回"
+                        value="3"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <!-- 多元化采购区域 -->
+                <div class="purchase-area">
+                  <div class="gHeader">
+                    <span>多元化采购</span>
+                  </div>
+                  <el-form-item label="多元化采购能力">
+                    <el-select
+                      v-model="form.purchase"
+                      placeholder="请选择多元化采购能力"
+                    >
+                      <el-option label="其他" value="0"></el-option>
+                      <el-option label="客户兰炭采购品种>=2类（大料、中料、小料、焦面）" value="4"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <!-- 带动作用区域 -->
+                <div class="drive-area">
+                  <div class="gHeader">
+                    <span>带动作用</span>
+                  </div>
+                  <el-form-item label="带动作用">
+                    <el-select
+                      v-model="form.drive"
+                      placeholder="请选择带动作用"
+                    >
+                      <el-option label="0：其他" value="0"></el-option>
+                      <el-option label="1：当天购买产品起末要带动作用" value="1"></el-option>
+                      <el-option label="3：当天购买产品起次要带动作用" value="3"></el-option>
+                      <el-option label="5：当天购买产品起首要带动作用" value="5"></el-option>
+                    </el-select>
+                    <span>前提（二者满足之一即触发）：a. 库存超出警戒值期间有购买产品厂家;b. 产品滞销5天及以上有购买产品厂家；</span>
+                  </el-form-item>
+                </div>
+                <!-- 客户类型区域 -->
+                <div class="customer-area">
+                  <div class="gHeader">
+                    <span>客户类型</span>
+                  </div>
+                  <el-form-item label="性质">
+                    <el-select
+                      v-model="form.customerNature"
+                      placeholder="请选择性质"
+                    >
+                      <el-option label="3：贸易商客户" value="3"></el-option>
+                      <el-option label="5：终端客户" value="5"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="区域">
+                    <el-select
+                      v-model="form.customerArea"
+                      placeholder="请选择区域"
+                    >
+                      <el-option label="0：陕西省内客户" value="0"></el-option>
+                      <el-option label="2：陕西省外客户" value="2"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <!-- 采购比重区域 -->
+                <div class="proportion-area">
+                  <div class="gHeader">
+                    <span>采购比重评估</span>
+                  </div>
+                  <el-form-item label="采购比重">
+                    <el-select
+                      v-model="form.proportion"
+                      placeholder="请选择采购比重"
+                    >
+                      <el-option label="0：其他" value="0"></el-option>
+                      <el-option label="1：当天采购量占末要需求量" value="1"></el-option>
+                      <el-option label="3：当天采购量占次要需求量" value="3"></el-option>
+                      <el-option label="5：当天采购量占主要需求量" value="5"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <!-- 采购均价评估 -->
+                <div class="average-area">
+                  <div class="gHeader">
+                    <span>采购均价评估</span>
+                  </div>
+                  <el-form-item label="采购比重">
+                    <el-input v-model="form.averagePrice" placeholder="得分"></el-input>
+                    <span>得分：（客户的平均采购价格-当季度销售均价）/5
+                    &nbsp;&nbsp;备注：多个产品算均值(吸货得分前三名才能得此附加分)</span>
                   </el-form-item>
                 </div>
               </el-form>
@@ -492,8 +656,19 @@ export default {
         status: "",
         duration: "",
         intensity: "",
+        power: "",
+        shop:"",
+        cash:"",
+        total:"",
+        score:"",
+        acceptance:"",
+        purchase:"",
+        drive:"",
+        customerNature:"",
+        customerArea:"",
+        proportion:"",
+        averagePrice:""
       },
-      radio1:"",
     };
   },
   methods: {
@@ -1157,13 +1332,17 @@ export default {
   margin-top: 50px;
   width: 758px;
   height: 767px;
-  overflow:auto;
+  overflow: auto;
 }
 /* 定义滚动条的样式 */
-.container #main .main-header .entrance .entrance-main::-webkit-scrollbar{
-  width:6px;
+.container #main .main-header .entrance .entrance-main::-webkit-scrollbar {
+  width: 6px;
 }
-.container #main .main-header .entrance .entrance-main::-webkit-scrollbar-thumb{
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main::-webkit-scrollbar-thumb {
   background: #275ba5;
   border-radius: 6px;
 }
@@ -1187,7 +1366,7 @@ export default {
   width: 700px;
   background-color: #184f7d;
 }
-/* 修改elementUI的样式 */
+/* 修改填报头部区域elementUI的样式 */
 .container
   #main
   .main-header
@@ -1235,7 +1414,7 @@ export default {
   overflow: auto;
 }
 /* 下拉搜索框样式更改设置 */
-.el-select-dropdown__list .el-input--suffix .el-input__inner {
+.el-select-dropdown .el-scrollbar .el-select-dropdown__wrap .el-select-dropdown__list .el-input--suffix .el-input__inner {
   width: 560px;
   height: 31px;
   padding-left: 12px;
@@ -1331,7 +1510,7 @@ export default {
   height: 12px;
   background: #33fff7;
 }
-/* 修改elementUI样式 */
+/* 修改品质特性区域elementUI样式 */
 .container
   #main
   .main-header
@@ -1430,16 +1609,22 @@ export default {
   margin-top: 37px;
   margin-left: 48px;
 }
-/* .container #main .main-header .entrance .entrance-main .el-form .power-area::after{
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area::after {
   position: absolute;
   z-index: 4;
-  left:-12px;
+  left: -12px;
   bottom: -24px;
   content: "";
   height: 1px;
   width: 700px;
   background-color: #184f7d;
-} */
+}
 .container
   #main
   .main-header
@@ -1468,7 +1653,7 @@ export default {
   height: 12px;
   background: #33fff7;
 }
-/* 修改elementUI的样式 */
+/* 修改能力评价区域elementUI的样式 */
 .container
   #main
   .main-header
@@ -1493,30 +1678,1096 @@ export default {
   color: #fff;
   font-size: 12px;
 }
-/* .container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group{
-  width: 579px;
-  height: 265px;
-} */
-.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio{
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group {
+  font-size: 12px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio {
   width: 187px;
   height: 127px;
-  margin-right:2px;
-  color:#fff;
+  margin-right: 2px;
+  color: #fff;
   font-size: 14px;
-  border:1px solid #2294d5;
+  border: 1px solid #2294d5;
 }
-.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio .el-radio__input .el-radio__inner{
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input.is-checked
+  + .el-radio__label {
+  color: #fff;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input {
+  vertical-align: top;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input
+  .el-radio__inner {
   border-radius: 0;
+  border-color: #32fdf6;
+  background: none;
 }
-.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio.is-checked{
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input
+  .el-radio__inner::after {
+  width: 0;
+  height: 0;
+  border-radius: 0;
+  background: none;
+  position: static;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input.is-checked
+  .el-radio__inner::after {
+  transform: none;
+  content: "\2714";
+  color: #32fdf6;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio {
+  background: #0c3265;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio.is-checked {
   background: linear-gradient(#0d96b1 0%, #00b294 100%);
 }
-.container #main .main-header .entrance .entrance-main .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio:nth-of-type(4){
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio:nth-of-type(4) {
   width: 187px;
   height: 127px;
-  margin-left:0;
-  margin-right:2px;
-  margin-top:10px;
+  margin-left: 0;
+  margin-right: 2px;
+  margin-top: 10px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .forty {
+  position: absolute;
+  top: 36px;
+  left: 1px;
+  width: 185px;
+  height: 90px;
+  color: #fff;
+  background: rgba(3, 20, 46, 0.3);
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .forty:hover {
+  cursor: pointer;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .forty
+  .forty-item {
+  padding-left: 10px;
+  padding-top: 4px;
+}
+
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .thirty {
+  position: absolute;
+  top: 36px;
+  left: 200px;
+  width: 185px;
+  height: 90px;
+  color: #fff;
+  background: rgba(3, 20, 46, 0.3);
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .thirty:hover {
+  cursor: pointer;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .thirty
+  .thirty-item {
+  padding-left: 10px;
+  padding-top: 4px;
+}
+
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .twenty {
+  position: absolute;
+  top: 36px;
+  left: 399px;
+  width: 185px;
+  height: 90px;
+  color: #fff;
+  background: rgba(3, 20, 46, 0.3);
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .twenty:hover {
+  cursor: pointer;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .twenty
+  .twenty-item {
+  padding-left: 10px;
+  padding-top: 4px;
+}
+
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .ten {
+  position: absolute;
+  top: 173px;
+  left: 1px;
+  width: 185px;
+  height: 90px;
+  color: #fff;
+  background: rgba(3, 20, 46, 0.3);
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .ten:hover {
+  cursor: pointer;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .ten
+  .ten-item {
+  padding-left: 10px;
+  padding-top: 6px;
+}
+
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .five {
+  z-index: 10;
+  position: absolute;
+  top: 173px;
+  left: 200px;
+  width: 185px;
+  height: 90px;
+  color: #fff;
+  background: rgba(3, 20, 46, 0.3);
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .five:hover {
+  cursor: pointer;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .five
+  .five-item {
+  padding-left: 10px;
+  padding-top: 6px;
+}
+/* 均衡购货评价 */
+.container #main .main-header .entrance .entrance-main .el-form .shop-area {
+  position: relative;
+  margin-top: 37px;
+  margin-left: 48px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: 0px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .gHeader {
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .gHeader::before {
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+
+/* 修改均衡购货区域elelmentUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .el-form-item
+  .el-form-item__content .el-radio-group .el-radio{
+    margin-right:2px;
+    margin-bottom:20px;
+  }
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .el-form-item
+  .el-form-item__content .el-radio-group .el-radio .el-radio__input .el-radio__inner{
+  width: 11px;
+  height: 11px;
+  background: none;
+  border: 1px solid #3fb1be;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .el-form-item
+  .el-form-item__content .el-radio-group .el-radio .el-radio__input .el-radio__inner::after{
+    background: #3fb1be;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .shop-area
+  .el-form-item
+  .el-form-item__content .el-radio-group .el-radio .el-radio__label{
+  padding-left:4px;
+  color:#fff;
+  font-size: 12px;
+}
+/* 信用评价区域 */
+.container #main .main-header .entrance .entrance-main .el-form .credit-area {
+  position: relative;
+  margin-top: -6px;
+  margin-left: 48px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -14px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .gHeader {
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .gHeader::before {
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+/* 修改信用评价区域elementUI的样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__content > .el-input{
+  width:100px;
+  margin-bottom:10px;
+  }
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__content .el-select .el-input{
+  width:582px;
+  margin-bottom:20px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__content > span{
+    padding-left:15px;
+    color:#fff;
+  }
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__content .el-input.is-disabled .el-input__inner{
+  text-align: center;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__content .el-input .el-input__inner{
+  background: rgba(3,20,46,0.3);
+  color:#fff;
+  border: 1px solid #0797a7;
+ }
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .credit-area
+  .el-form-item
+  .el-form-item__content .el-select{
+  width:100%;
+}
+
+.el-select-dropdown .el-select-dropdown__list{
+  padding:0;
+}
+
+/* 多元化采购区域 */
+.container #main .main-header .entrance .entrance-main .el-form .purchase-area{
+  position: relative;
+  margin-top: 27px;
+  margin-left: 48px;
+}
+.container #main .main-header .entrance .entrance-main .el-form .purchase-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -14px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container #main .main-header .entrance .entrance-main .el-form .purchase-area .gHeader{
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container #main .main-header .entrance .entrance-main .el-form .purchase-area .gHeader::before{
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .purchase-area
+  .el-form-item
+  .el-form-item__content .el-select{
+  width:582px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .purchase-area
+  .el-form-item
+  .el-form-item__content .el-select .el-input .el-input__inner{
+    border: 1px solid #0797a7;
+    background: rgba(3,20,46,0.3);
+    color:#fff;
+  }
+/* 修改多元化采购区域elementUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .purchase-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .purchase-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+  line-height: 24px;
+}
+/* 带动作用区域 */
+.container #main .main-header .entrance .entrance-main .el-form .drive-area{
+  position: relative;
+  margin-top: 27px;
+  margin-left: 48px;
+}
+.container #main .main-header .entrance .entrance-main .el-form .drive-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -14px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container #main .main-header .entrance .entrance-main .el-form .drive-area .gHeader{
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container #main .main-header .entrance .entrance-main .el-form .drive-area .gHeader::before{
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+.container #main .main-header .entrance .entrance-main .el-form .drive-area .el-form-item .el-form-item__content > span{
+  color:#fff;
+  font-size:12px;
+}
+/* 带动作用区域修改elementUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__content .el-select{
+  width:582px;
+  margin-right:18px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__content .el-select .el-input .el-input__inner{
+    border: 1px solid #0797a7;
+    background: rgba(3,20,46,0.3);
+    color:#fff;
+  }
+  .container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .drive-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+/* 客户类型区域 */
+.container #main .main-header .entrance .entrance-main .el-form .customer-area{
+  position: relative;
+  margin-top: 27px;
+  margin-left: 48px;
+}
+.container #main .main-header .entrance .entrance-main .el-form .customer-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -24px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container #main .main-header .entrance .entrance-main .el-form .customer-area .gHeader{
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container #main .main-header .entrance .entrance-main .el-form .customer-area .gHeader::before{
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+
+/* 修改客户类型区域elementUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .customer-area
+  .el-form-item
+  .el-form-item__content .el-select{
+  width:582px;
+  margin-right:18px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .customer-area
+  .el-form-item
+  .el-form-item__content .el-select .el-input .el-input__inner{
+    border: 1px solid #0797a7;
+    background: rgba(3,20,46,0.3);
+    color:#fff;
+  }
+  .container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .customer-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .customer-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+/* 采购比重区域 */
+.container #main .main-header .entrance .entrance-main .el-form .proportion-area{
+  position: relative;
+  margin-top: 37px;
+  margin-left: 48px;
+}
+.container #main .main-header .entrance .entrance-main .el-form .proportion-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -24px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container #main .main-header .entrance .entrance-main .el-form .proportion-area .gHeader{
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container #main .main-header .entrance .entrance-main .el-form .proportion-area .gHeader::before{
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+/* 修改采购比重区域elementUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .proportion-area
+  .el-form-item
+  .el-form-item__content .el-select{
+  width:582px;
+  margin-right:18px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .proportion-area
+  .el-form-item
+  .el-form-item__content .el-select .el-input .el-input__inner{
+    border: 1px solid #0797a7;
+    background: rgba(3,20,46,0.3);
+    color:#fff;
+  }
+  .container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .proportion-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .proportion-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+/* 采购均价区域 */
+.container #main .main-header .entrance .entrance-main .el-form .average-area{
+  position: relative;
+  margin-top: 37px;
+  margin-left: 48px;
+}
+.container #main .main-header .entrance .entrance-main .el-form .average-area::after {
+  position: absolute;
+  z-index: 4;
+  left: -12px;
+  bottom: -24px;
+  content: "";
+  height: 1px;
+  width: 700px;
+  background-color: #184f7d;
+}
+.container #main .main-header .entrance .entrance-main .el-form .average-area .gHeader{
+  position: relative;
+  font-size: 16px;
+  color: #33fff7;
+}
+.container #main .main-header .entrance .entrance-main .el-form .average-area .gHeader::before{
+  position: absolute;
+  top: 5px;
+  left: -10px;
+  content: "";
+  width: 4px;
+  height: 12px;
+  background: #33fff7;
+}
+
+/* 修改购均价区域elementUI样式 */
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .average-area
+  .el-form-item
+  .el-form-item__content .el-input{
+  width:100px;
+  margin-right:500px;
+  text-align: center;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .average-area
+  .el-form-item
+  .el-form-item__content > span{
+    color:#fff;
+  }
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .average-area
+  .el-form-item
+  .el-form-item__content .el-input .el-input__inner{
+    border: 1px solid #0797a7;
+    background: rgba(3,20,46,0.3);
+    color:#fff;
+  }
+  .container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .average-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .main-header
+  .entrance
+  .entrance-main
+  .el-form
+  .average-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
 }
 /* 填报区域底部样式 */
 .container #main .main-header .entrance .entrance-bottom {
@@ -1525,8 +2776,9 @@ export default {
   width: 758px;
   height: 73px;
   background: #09264e;
-  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48, 0.3);
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
 }
+/* 修改填报区域底部俩按钮elementUI样式 */
 .container #main .main-header .entrance .entrance-bottom .el-button--default {
   width: 84px;
   height: 30px;
