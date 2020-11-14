@@ -97,14 +97,26 @@
                   <div class="fourthNum">1</div>
                 </div>
                 <div class="info-right">
+                  <el-date-picker
+                    v-model="value1"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                   <a @click="showEntrance">填报入口</a>
                 </div>
               </div>
-              <div class="score">
+              <!-- <div class="score">
                 <div class="fill"></div>
-              </div>
+              </div> -->
+              <el-progress
+                :percentage="86"
+                :show-text="false"
+                color="#fcb018"
+                style="height: 22px"
+              ></el-progress>
               <!-- 表格区域 -->
-              <table>
+              <!-- <table>
                 <tr>
                   <th>排名</th>
                   <th>客户</th>
@@ -194,7 +206,19 @@
                     </div>
                   </td>
                 </tr>
-              </table>
+              </table> -->
+              <!-- <el-table
+                :data="tableData1"
+                style="width: 100%"
+                row-key="id"
+                border
+              >
+                <el-table-column prop="date" label="日期" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名" width="180">
+                </el-table-column>
+                <el-table-column prop="address" label="地址"> </el-table-column>
+              </el-table> -->
               <!-- 分页 -->
               <el-pagination
                 background
@@ -382,14 +406,22 @@
                     <span>得分= (现金金额/销售总金额)*15</span>
                   </el-form-item>
                   <el-form-item label="配合度">
-                    <el-select v-model="form.acceptance" placeholder="默认为0">
+                    <el-select
+                      v-model="form.acceptance"
+                      placeholder="默认为0"
+                      style="width: 523px"
+                    >
                       <el-option label="其他" value="0"></el-option>
                       <el-option
                         label="承兑汇票补充证明材料在规定期限内（一周内）返回"
                         value="3"
                       ></el-option>
                     </el-select>
-                    <el-select v-model="form.contract" placeholder="默认为0">
+                    <el-select
+                      v-model="form.contract"
+                      placeholder="默认为0"
+                      style="width: 523px"
+                    >
                       <el-option label="其他" value="0"></el-option>
                       <el-option
                         label="合同、发货确认单据等在规定期限内（一周内）返回"
@@ -527,7 +559,7 @@
           <div class="right">
             <div class="right-item1">
               <div class="diversification">多元化采购</div>
-              <div class="circular">
+              <div class="circular" @click="showPurchaseArea">
                 <div class="smallLogo">
                   <img src="./image/12.png" alt="" />
                   <span>多元化采购能力</span>
@@ -551,14 +583,14 @@
               <div class="right-item2">
                 <div class="drive">
                   <div class="drive-header">带动作用</div>
-                  <div class="drive-main">
+                  <div class="drive-main" @click="showDriveArea">
                     <img src="./image/17.png" alt="" />
                     <span>5</span>
                   </div>
                 </div>
                 <div class="drive">
                   <div class="drive-header">采购比重</div>
-                  <div class="drive-main">
+                  <div class="drive-main" @click="showProportionArea">
                     <img src="./image/16.png" alt="" />
                     <span>5</span>
                   </div>
@@ -570,7 +602,7 @@
           <div class="footer">
             <div class="footer-item">
               <div class="credit">信用评价</div>
-              <div class="coverage">
+              <div class="coverage" @click="showCreditArea">
                 <div class="chart">
                   <img src="./image/18.png" alt="" />
                   <i class="numa">15</i>
@@ -592,7 +624,7 @@
             <div class="footer-item2">
               <div class="credit">采购均价</div>
               <div class="coverage2">
-                <div class="coverage2-left">
+                <!-- <div class="coverage2-left">
                   <ul class="secondary">
                     <li class="jack">
                       <span>中料</span>
@@ -636,12 +668,12 @@
                     <span>3865</span>
                     <i>采购均价</i>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="footer-item">
               <div class="credit">客户类型</div>
-              <div class="coverage">
+              <div class="coverage" @click="showCustomerArea">
                 <div class="chart">
                   <img src="./image/18.png" alt="" />
                   <i class="numb">5</i>
@@ -797,6 +829,261 @@
               </div>
             </el-form>
           </div>
+          <!-- 单独的均衡购货评价填报入口 -->
+          <div v-show="isShowShopArea" class="shopArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>均衡购货评价</span>
+                </div>
+                <div class="hRight" @click="closeShopArea">X</div>
+              </div>
+              <!-- 均衡购货评价区域 -->
+              <div class="shop-area">
+                <el-form-item label="均衡购货能力">
+                  <el-radio-group v-model="form.shop">
+                    <el-radio :label="20">20：每月购货天数>=20天；</el-radio>
+                    <el-radio :label="15">15：每月购货天数>=15天；</el-radio>
+                    <el-radio :label="10">10：每月购货天数>=10天；</el-radio>
+                    <el-radio :label="5">5：每月购货天数&lt;10天；</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closeShopArea">取消</el-button>
+                <el-button type="primary" @click="updateShopArea" size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
+          <!-- 单独的信用评价填报入口 -->
+          <div v-show="isShowCreditArea" class="creditArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>信用评价</span>
+                </div>
+                <div class="hRight" @click="closeCreditArea">X</div>
+              </div>
+              <!-- 信用评价区域 -->
+              <div class="credit-area">
+                <el-form-item label="现金比例">
+                  <el-input v-model="form.score" placeholder="得分"></el-input>
+                  <span>得分= (现金金额/销售总金额)*15</span>
+                </el-form-item>
+                <el-form-item label="配合度">
+                  <el-select
+                    v-model="form.acceptance"
+                    placeholder="默认为0"
+                    style="width: 523px"
+                  >
+                    <el-option label="0：其他" value="0"></el-option>
+                    <el-option
+                      label="3：承兑汇票补充证明材料在规定期限内（一周内）返回"
+                      value="3"
+                    ></el-option>
+                  </el-select>
+                  <el-select
+                    v-model="form.contract"
+                    placeholder="默认为0"
+                    style="width: 523px"
+                  >
+                    <el-option label="0：其他" value="0"></el-option>
+                    <el-option
+                      label="3：合同、发货确认单据等在规定期限内（一周内）返回"
+                      value="3"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closeCreditArea">取消</el-button>
+                <el-button type="primary" @click="updateCreditArea" size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
+          <!-- 单独的客户类型填报入口 -->
+          <div v-show="isShowCustomerArea" class="customerArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>客户类型</span>
+                </div>
+                <div class="hRight" @click="closeCustomerArea">X</div>
+              </div>
+              <!-- 客户类型区域 -->
+              <div class="customer-area">
+                <el-form-item label="性质">
+                  <el-select
+                    v-model="form.customerNature"
+                    placeholder="请选择性质"
+                  >
+                    <el-option label="3：贸易商客户" value="3"></el-option>
+                    <el-option label="5：终端客户" value="5"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="区域">
+                  <el-select
+                    v-model="form.customerArea"
+                    placeholder="请选择区域"
+                  >
+                    <el-option label="0：陕西省内客户" value="0"></el-option>
+                    <el-option label="2：陕西省外客户" value="2"></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closeCustomerArea"
+                  >取消</el-button
+                >
+                <el-button
+                  type="primary"
+                  @click="updateCustomerArea"
+                  size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
+          <!-- 单独的多元化采购填报入口 -->
+          <div v-show="isShowPurchaseArea" class="purchaseArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>多元化采购</span>
+                </div>
+                <div class="hRight" @click="closePurchaseArea">X</div>
+              </div>
+              <!-- 多元化采购区域 -->
+              <div class="purchase-area">
+                <el-form-item label="多元化采购能力">
+                  <el-select
+                    v-model="form.purchase"
+                    placeholder="请选择多元化采购能力"
+                  >
+                    <el-option label="其他" value="0"></el-option>
+                    <el-option
+                      label="客户兰炭采购品种>=2类（大料、中料、小料、焦面）"
+                      value="4"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closePurchaseArea"
+                  >取消</el-button
+                >
+                <el-button
+                  type="primary"
+                  @click="updatePurchaseArea"
+                  size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
+          <!-- 单独的带动作用填报入口 -->
+          <div v-show="isShowDriveArea" class="driveArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>带动作用</span>
+                </div>
+                <div class="hRight" @click="closeDriveArea">X</div>
+              </div>
+              <!-- 带动作用区域 -->
+              <div class="drive-area">
+                <el-form-item label="带动作用">
+                  <el-select v-model="form.drive" placeholder="请选择带动作用">
+                    <el-option label="0：其他" value="0"></el-option>
+                    <el-option
+                      label="1：当天购买产品起末要带动作用"
+                      value="1"
+                    ></el-option>
+                    <el-option
+                      label="3：当天购买产品起次要带动作用"
+                      value="3"
+                    ></el-option>
+                    <el-option
+                      label="5：当天购买产品起首要带动作用"
+                      value="5"
+                    ></el-option>
+                  </el-select>
+                  <span
+                    >前提（二者满足之一即触发）：a.
+                    库存超出警戒值期间有购买产品厂家;b.
+                    产品滞销5天及以上有购买产品厂家；</span
+                  >
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closeDriveArea">取消</el-button>
+                <el-button type="primary" @click="updateDriveArea" size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
+          <!-- 单独的采购比重填报入口 -->
+          <div v-show="isShowProportionArea" class="proportionArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>多元化采购</span>
+                </div>
+                <div class="hRight" @click="closeProportionArea">X</div>
+              </div>
+              <!-- 采购比重区域 -->
+              <div class="proportion-area">
+                <el-form-item label="采购比重">
+                  <el-select
+                    v-model="form.proportion"
+                    placeholder="请选择采购比重"
+                  >
+                    <el-option label="0：其他" value="0"></el-option>
+                    <el-option
+                      label="1：当天采购量占末要需求量"
+                      value="1"
+                    ></el-option>
+                    <el-option
+                      label="3：当天采购量占次要需求量"
+                      value="3"
+                    ></el-option>
+                    <el-option
+                      label="5：当天采购量占主要需求量"
+                      value="5"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closeProportionArea"
+                  >取消</el-button
+                >
+                <el-button
+                  type="primary"
+                  @click="updateProportionArea"
+                  size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
         </div>
       </div>
     </div>
@@ -809,10 +1096,16 @@ export default {
   name: "Supply",
   data() {
     return {
+      value1: "",
       isShow: false,
       isShowQualityArea: false,
       isShowPowerArea: false,
       isShowShopArea: false,
+      isShowCreditArea: false,
+      isShowCustomerArea: false,
+      isShowPurchaseArea: false,
+      isShowDriveArea: false,
+      isShowProportionArea:false,
       form: {
         name: "",
         name2: "",
@@ -834,6 +1127,33 @@ export default {
         proportion: "",
         averagePrice: "",
       },
+      // tableData1: [
+      //   {
+      //     id: 1,
+      //     date: "2016-05-02",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1518 弄",
+      //   },
+      //   {
+      //     id: 2,
+      //     date: "2016-05-04",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1517 弄",
+      //   },
+      //   {
+      //     id: 3,
+      //     date: "2016-05-01",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1519 弄",
+      //     hasChildren: true,
+      //   },
+      //   {
+      //     id: 4,
+      //     date: "2016-05-03",
+      //     name: "王小虎",
+      //     address: "上海市普陀区金沙江路 1516 弄",
+      //   },
+      // ],
     };
   },
   methods: {
@@ -865,29 +1185,96 @@ export default {
     },
     // 点击展示单独的能力评估填报入口
     showPowerArea() {
-      this.isShowPowerArea = true
+      this.isShowPowerArea = true;
     },
     // 点击x或取消关闭能力评估填报入口
-    closePowerArea(){
-      this.isShowPowerArea = false
+    closePowerArea() {
+      this.isShowPowerArea = false;
     },
     // 点击提交更新能力评估回调
-    updatePowerArea(){
-      this.isShowPowerArea = false
+    updatePowerArea() {
+      this.isShowPowerArea = false;
       this.$message.success("更新能力评估成功");
     },
     // 点击展示单独的均衡购货评价填报入口
     showShopArea() {
-      this.isShowShopArea = true
+      this.isShowShopArea = true;
     },
     // 点击x或取消关闭均衡购货评价填报入口
-    closeShopArea(){
-      this.isShowShopArea = false
+    closeShopArea() {
+      this.isShowShopArea = false;
     },
     // 点击提交更新均衡购货评价回调
-    updateShopArea(){
-      this.isShowShopArea = false
-      this.$message.success('更新均衡购货评价成功')
+    updateShopArea() {
+      this.isShowShopArea = false;
+      this.$message.success("更新均衡购货评价成功");
+    },
+    // 点击展示单独的信用评价填报入口
+    showCreditArea() {
+      this.isShowCreditArea = true;
+    },
+    // 点击x或取消关闭信用评价填报
+    closeCreditArea() {
+      this.isShowCreditArea = false;
+    },
+    // 点击提交更新信用评价
+    updateCreditArea() {
+      this.isShowCreditArea = false;
+      this.$message.success("更新信用评价成功");
+    },
+    // 点击展示单独的客户类型填报入口
+    showCustomerArea() {
+      this.isShowCustomerArea = true;
+    },
+    // 点击x或取消关闭单独的客户填报
+    closeCustomerArea() {
+      this.isShowCustomerArea = false;
+    },
+    // 点击提交后的更新客户类型回调
+    updateCustomerArea() {
+      this.isShowCustomerArea = false;
+      this.$message.success("客户类型更新成功");
+    },
+    // 点击展示多元化采购单独填报入口
+    showPurchaseArea() {
+      this.isShowPurchaseArea = true;
+    },
+    // 点击x或取消关闭多元化采购单独填报入口
+    closePurchaseArea() {
+      this.isShowPurchaseArea = false;
+    },
+    // 点击提交后更新多元化采购
+    updatePurchaseArea() {
+      this.isShowPurchaseArea = false;
+      this.$message.success("多元化采购更新成功");
+    },
+    // 点击展示带动作用填报
+    showDriveArea() {
+      this.isShowDriveArea = true;
+    },
+
+    // 点击x或取消关闭带动作用填报
+    closeDriveArea() {
+      this.isShowDriveArea = false;
+    },
+
+    // 点击提交更新带动作用
+    updateDriveArea() {
+      this.isShowDriveArea = false;
+      this.$message.success("带动作用更新成功");
+    },
+    // 点击展示采购比重填报
+    showProportionArea(){
+      this.isShowProportionArea = true
+    },
+    // 点击x或取消关闭采购比重填报
+    closeProportionArea(){
+      this.isShowProportionArea = false
+    },
+    // 点击提交更新采购比重
+    updateProportionArea(){
+      this.isShowProportionArea = false
+      this.$message.success("采购比重更新成功")
     }
   },
   components: {
@@ -1153,7 +1540,8 @@ export default {
   margin: 52px 0 0 24px;
 }
 /* 设置hover效果 */
-.container #main .main-header .left .left-item2 .power .power-main:hover,.container #main .main-header .left .left-item2 .shop .shop-main:hover{
+.container #main .main-header .left .left-item2 .power .power-main:hover,
+.container #main .main-header .left .left-item2 .shop .shop-main:hover {
   cursor: pointer;
 }
 .container #main .main-header .left .left-item2 .power .power-main img,
@@ -1317,12 +1705,71 @@ export default {
   border: 1px solid #5a9cff;
   text-align: center;
 }
+/* 设置填报入口前日期的样式 */
+.container
+  #main
+  .main-header
+  .mainItem
+  .rectangle
+  .info
+  .info-right
+  .el-date-editor {
+  width: 164px;
+  height: 17px;
+  margin-right: 16px;
+}
+.container
+  #main
+  .main-header
+  .mainItem
+  .rectangle
+  .info
+  .info-right
+  .el-date-editor
+  .el-input__inner {
+  color: #33fff7;
+}
+.el-icon-date:before {
+  color: #33fff7;
+}
 .container #main .main-header .mainItem .rectangle .info .info-right > a {
   text-decoration: underline;
   font-size: 16px;
   color: #18e3ed;
 }
-.container #main .main-header .mainItem .rectangle .score {
+.container
+  #main
+  .main-header
+  .mainItem
+  .rectangle
+  .el-progress
+  .el-progress-bar {
+  margin-top: 20px;
+  margin-left: 22px;
+  width: 830px;
+}
+.container
+  #main
+  .main-header
+  .mainItem
+  .rectangle
+  .el-progress
+  .el-progress-bar
+  .el-progress-bar__outer {
+  border-radius: 0;
+}
+.container
+  #main
+  .main-header
+  .mainItem
+  .rectangle
+  .el-progress
+  .el-progress-bar
+  .el-progress-bar__outer
+  .el-progress-bar__inner {
+  border-radius: 0;
+}
+/* .container #main .main-header .mainItem .rectangle .score {
   box-sizing: border-box;
   width: 832px;
   height: 22px;
@@ -1333,15 +1780,15 @@ export default {
   width: 785px;
   height: 20px;
   background: #fcb018;
-}
+} */
 /* 表格区域样式 */
-.container #main .main-header .mainItem .rectangle > table {
+/* .container #main .main-header .mainItem .rectangle > table {
   position: relative;
   width: 832px;
   margin: 0 17px 0 21px;
-}
+} */
 /* 伪类 */
-.container #main .main-header .mainItem .rectangle > table::before {
+/* .container #main .main-header .mainItem .rectangle > table::before {
   position: absolute;
   left: 82px;
   content: "";
@@ -1349,8 +1796,8 @@ export default {
   height: 389px;
   opacity: 0.34;
   border: 0.5px solid #00aeef;
-}
-.container #main .main-header .mainItem .rectangle > table::after {
+} */
+/* .container #main .main-header .mainItem .rectangle > table::after {
   position: absolute;
   top: 0;
   left: 332px;
@@ -1359,17 +1806,17 @@ export default {
   height: 389px;
   opacity: 0.34;
   border: 0.5px solid #00aeef;
-}
-.container #main .main-header .mainItem .rectangle > table > tr:nth-of-type(1) {
+} */
+/* .container #main .main-header .mainItem .rectangle > table > tr:nth-of-type(1) {
   height: 48px;
   background: rgba(0, 174, 239, 0.34);
-}
-.container #main .main-header .mainItem .rectangle > table > tr > th {
+} */
+/* .container #main .main-header .mainItem .rectangle > table > tr > th {
   font-size: 16px;
   text-align: center;
   color: #ffffff;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1379,20 +1826,19 @@ export default {
   > th:nth-of-type(3) {
   text-align: left;
   padding-left: 30px;
-}
-.container #main .main-header .mainItem .rectangle > table > tr {
+} */
+/* .container #main .main-header .mainItem .rectangle > table > tr {
   height: 48px;
   border: 1px solid #00aeef;
-}
+} */
 
-.container #main .main-header .mainItem .rectangle > table > tr > td {
+/* .container #main .main-header .mainItem .rectangle > table > tr > td {
   height: 48px;
-  /* line-height: 48px; */
   font-size: 14px;
   color: #fff;
   text-align: center;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1401,8 +1847,8 @@ export default {
   > tr
   > td:nth-of-type(1) {
   width: 10%;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1411,8 +1857,8 @@ export default {
   > tr
   > td:nth-of-type(2) {
   width: 30%;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1421,8 +1867,8 @@ export default {
   > tr
   > td:nth-of-type(3) {
   width: 60%;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1432,8 +1878,8 @@ export default {
   > td:nth-of-type(3)
   .process {
   position: relative;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1447,8 +1893,8 @@ export default {
   margin-left: 30px;
   border: 1px solid #051c2f;
   background: #051c2f;
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1462,8 +1908,8 @@ export default {
   width: 363px;
   height: 14px;
   background: rgba(103, 215, 253, 0.5);
-}
-.container
+} */
+/* .container
   #main
   .main-header
   .mainItem
@@ -1476,8 +1922,8 @@ export default {
   position: absolute;
   top: 0;
   right: 52px;
-}
-/* 重写elementUI样式 */
+} */
+/* 重写elementUI分页样式 */
 .container #main .main-header .mainItem .rectangle .el-pagination {
   margin: 10px 0 0 133px;
 }
@@ -3216,6 +3662,10 @@ export default {
   height: 279px;
   border: 1px solid #235464;
 }
+/* 设置hover效果 */
+.container #main .main-header .right .right-item1 .circular:hover {
+  cursor: pointer;
+}
 .container #main .main-header .right .right-item1 .circular .smallLogo {
   position: relative;
   z-index: 3;
@@ -3555,6 +4005,10 @@ export default {
   margin: 10px 49px;
   position: relative;
 }
+/* 设置hover效果 */
+.container #main .main-header .right .right-item2 .drive .drive-main:hover {
+  cursor: pointer;
+}
 .container #main .main-header .right .right-item2 .drive .drive-main > img {
   width: 100%;
   height: 100%;
@@ -3608,6 +4062,10 @@ export default {
   box-sizing: border-box;
   height: 229px;
   border: 1px solid #235464;
+}
+/* 设置hover效果 */
+.container #main .footer .footer-item .coverage:hover {
+  cursor: pointer;
 }
 .container #main .footer .footer-item .coverage .chart {
   position: relative;
@@ -3692,8 +4150,7 @@ export default {
   display: flex;
 }
 
-.container #main .footer .footer-item2 .coverage2 .coverage2-left {
-  /* box-sizing: border-box; */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-left {
   width: 274px;
   height: 201px;
   border: 1px dashed #03feff;
@@ -3701,13 +4158,13 @@ export default {
   display: flex;
   justify-content: space-between;
   border-radius: 6px;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .secondary {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-left .secondary {
   box-sizing: border-box;
   margin: 4px 0 4px 4px;
   border: 1px solid #03feff;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3723,9 +4180,9 @@ export default {
   color: #fff;
   text-align: center;
   background: linear-gradient(#0d96b1 0%, #00b294 100%);
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -3740,8 +4197,8 @@ export default {
   width: 22px;
   height: 0;
   border: 0.5px solid #00b294;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3756,8 +4213,8 @@ export default {
   width: 8px;
   height: 0;
   border: 0.5px solid #00b294;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3772,8 +4229,8 @@ export default {
   width: 0;
   height: 44px;
   border: 0.5px solid #00b294;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3788,8 +4245,8 @@ export default {
   width: 0;
   height: 44px;
   border: 0.5px solid #00b294;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3804,8 +4261,8 @@ export default {
   width: 0;
   height: 10px;
   border: none;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3819,13 +4276,13 @@ export default {
   line-height: 36px;
   text-align: center;
   color: #03feff;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .reduce {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-left .reduce {
   width: 30px;
   height: 30px;
   margin: 81px 0 88px 8px;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3835,8 +4292,8 @@ export default {
   > img {
   width: 98%;
   height: 98%;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .price {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-left .price {
   position: relative;
   box-sizing: border-box;
   width: 74px;
@@ -3844,9 +4301,9 @@ export default {
   border: 1px solid #03feff;
   margin: 34px 5px 38px 0;
   display: flex;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -3860,8 +4317,8 @@ export default {
   width: 3px;
   height: 0;
   border: 0.5px solid #03feff;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3877,8 +4334,8 @@ export default {
   font-size: 14px;
   padding: 10px 9px;
   color: #fff;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3892,19 +4349,18 @@ export default {
   text-align: center;
   font-size: 20px;
   color: #fff;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right {
-  /* position: relative; */
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right {
   display: flex;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .bery {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .bery {
   width: 30px;
   height: 30px;
   margin: 94px 0 99px 17px;
   position: relative;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -3918,12 +4374,12 @@ export default {
   width: 16px;
   height: 0;
   border: 0.5px solid #03feff;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .bery > img {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .bery > img {
   width: 100%;
   height: 100%;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .cery {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .cery {
   position: relative;
   box-sizing: border-box;
   width: 50px;
@@ -3931,9 +4387,9 @@ export default {
   border: 1px solid #32fdf6;
   border-radius: 50%;
   margin: 86px 0 89px 17px;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -3947,8 +4403,8 @@ export default {
   height: 0;
   width: 15px;
   border: 0.5px solid #03feff;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -3961,15 +4417,15 @@ export default {
   left: 17px;
   font-size: 24px;
   color: #03feff;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .dery {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .dery {
   position: relative;
   width: 47px;
   height: 23px;
   margin: 98px 0 102px 26px;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -3983,22 +4439,22 @@ export default {
   height: 0;
   width: 98px;
   border: 0.5px solid #03feff;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .dery > img {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .dery > img {
   width: 100%;
   height: 100%;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .eery {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .eery {
   position: relative;
   width: 179px;
   height: 179px;
   margin: 21px 39px 25px 12px;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > img {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > img {
   width: 100%;
   height: 100%;
-}
-.container
+} */
+/* .container
   #main
   .footer
   .footer-item2
@@ -4011,14 +4467,14 @@ export default {
   left: 58px;
   font-size: 26px;
   color: #32fdf6;
-}
-.container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > i {
+} */
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > i {
   position: absolute;
   top: 100px;
   left: 58px;
   font-size: 16px;
   color: #fff;
-}
+} */
 
 /* 单独的品质特性填报入口 */
 .container #main .qualityArea {
@@ -4026,7 +4482,6 @@ export default {
   width: 760px;
   height: 374px;
   left: 500px;
-  /* left:200px; */
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -4166,7 +4621,7 @@ export default {
   border-radius: 4px;
 }
 /* 单独的能力评估填报入口 */
-.container #main .powerArea{
+.container #main .powerArea {
   position: absolute;
   width: 760px;
   height: 474px;
@@ -4210,15 +4665,36 @@ export default {
   margin-top: 64px;
   margin-left: 0px;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__label {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__label {
   text-align: left;
   color: #fff;
   font-size: 12px;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__content .el-radio-group {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group {
   font-size: 12px;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio {
   width: 187px;
   height: 127px;
   margin-right: 2px;
@@ -4226,48 +4702,107 @@ export default {
   font-size: 14px;
   border: 1px solid #2294d5;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio .el-radio__input.is-checked + .el-radio__label {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input.is-checked
+  + .el-radio__label {
   color: #fff;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__content.el-radio-group .el-radio .el-radio__input {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content.el-radio-group
+  .el-radio
+  .el-radio__input {
   vertical-align: top;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio .el-radio__input .el-radio__inner {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input
+  .el-radio__inner {
   border-radius: 0;
   border-color: #32fdf6;
   background: none;
 }
-.container #main .powerArea .el-form .power-area .el-form-item.el-form-item__content .el-radio-group .el-radio .el-radio__input .el-radio__inner::after {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item.el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input
+  .el-radio__inner::after {
   width: 0;
   height: 0;
   border-radius: 0;
   background: none;
   position: static;
 }
-.container #main .powerArea .el-form .power-area .el-form-item .el-form-item__content .el-radio-group .el-radio .el-radio__input.is-checked .el-radio__inner::after {
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input.is-checked
+  .el-radio__inner::after {
   transform: none;
   content: "\2714";
   color: #32fdf6;
-  background:none;
+  background: none;
   position: absolute;
-  top:-1px;
-  left:0px;
+  top: -1px;
+  left: 0px;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .el-radio {
   background: #0c3265;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .el-radio.is-checked {
   background: linear-gradient(#0d96b1 0%, #00b294 100%);
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4278,7 +4813,11 @@ export default {
   margin-right: 2px;
   margin-top: 10px;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4291,14 +4830,22 @@ export default {
   color: #fff;
   background: rgba(3, 20, 46, 0.3);
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .forty:hover {
   cursor: pointer;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4308,7 +4855,11 @@ export default {
   padding-top: 4px;
 }
 
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4321,14 +4872,22 @@ export default {
   color: #fff;
   background: rgba(3, 20, 46, 0.3);
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .thirty:hover {
   cursor: pointer;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4338,7 +4897,11 @@ export default {
   padding-top: 4px;
 }
 
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4351,14 +4914,22 @@ export default {
   color: #fff;
   background: rgba(3, 20, 46, 0.3);
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .twenty:hover {
   cursor: pointer;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4368,7 +4939,11 @@ export default {
   padding-top: 4px;
 }
 
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4381,14 +4956,22 @@ export default {
   color: #fff;
   background: rgba(3, 20, 46, 0.3);
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .ten:hover {
   cursor: pointer;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4398,7 +4981,11 @@ export default {
   padding-top: 6px;
 }
 
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4412,14 +4999,22 @@ export default {
   color: #fff;
   background: rgba(3, 20, 46, 0.3);
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
   .five:hover {
   cursor: pointer;
 }
-.container #main .powerArea .el-form .power-area
+.container
+  #main
+  .powerArea
+  .el-form
+  .power-area
   .el-form-item
   .el-form-item__content
   .el-radio-group
@@ -4432,7 +5027,7 @@ export default {
 .container #main .powerArea .el-form .entrance-bottom {
   position: fixed;
   /* top: 439px; */
-  top:538px;
+  top: 538px;
   width: 759px;
   height: 73px;
   background: #09264e;
@@ -4451,6 +5046,593 @@ export default {
   color: #fff;
 }
 .container #main .powerArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+/* 单独的均衡购货评价填报入口样式 */
+.container #main .shopArea {
+  position: absolute;
+  width: 760px;
+  height: 274px;
+  left: 500px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+/* 单独的均衡购货评价填报入口头部样式 */
+.container #main .shopArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .shopArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .shopArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .shopArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+/* 修改单独的均衡购货 均衡购货区域elelmentUI样式 */
+.container #main .shopArea .el-form-item {
+  margin-top: 64px;
+  margin-left: 32px;
+}
+.container #main .shopArea .el-form-item .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  margin-bottom: 16px;
+}
+.container
+  #main
+  .shopArea
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio {
+  margin-right: 2px;
+  margin-bottom: 20px;
+}
+.container
+  #main
+  .shopArea
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input
+  .el-radio__inner {
+  width: 11px;
+  height: 11px;
+  background: none;
+  border: 1px solid #3fb1be;
+}
+.container
+  #main
+  .shopArea
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__input
+  .el-radio__inner::after {
+  background: #3fb1be;
+}
+.container
+  #main
+  .shopArea
+  .el-form-item
+  .el-form-item__content
+  .el-radio-group
+  .el-radio
+  .el-radio__label {
+  padding-left: 4px;
+  color: #fff;
+  font-size: 12px;
+}
+/* 单独的均衡购货评价填报入口底部样式 */
+.container #main .shopArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 340px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的均衡购货评价填报入口底部elementUI样式  */
+.container #main .shopArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .shopArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+/* 单独的信用评价填报入口样式 */
+.container #main .creditArea {
+  position: absolute;
+  width: 760px;
+  height: 374px;
+  left: 500px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+/* 单独的信用评价填报入口头部样式 */
+.container #main .creditArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .creditArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .creditArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .creditArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+/* 修改信用评价 信用评价区域elementUI的样式 */
+.container #main .creditArea .el-form-item {
+  margin-top: 64px;
+  margin-left: 30px;
+}
+.container #main .creditArea .el-form-item:nth-of-type(2) {
+  margin-top: 14px;
+  margin-left: 30px;
+}
+.container #main .creditArea .el-form-item .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+.container #main .creditArea .el-form-item .el-form-item__content > .el-input {
+  width: 100px;
+  margin-bottom: 10px;
+}
+.container
+  #main
+  .creditArea
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input {
+  width: 582px;
+  margin-bottom: 20px;
+}
+.container #main .creditArea .el-form-item .el-form-item__content > span {
+  padding-left: 15px;
+  color: #fff;
+}
+.container
+  #main
+  .creditArea
+  .el-form-item
+  .el-form-item__content
+  .el-input.is-disabled
+  .el-input__inner {
+  text-align: center;
+}
+.container
+  #main
+  .creditArea
+  .el-form-item
+  .el-form-item__content
+  .el-input
+  .el-input__inner {
+  background: rgba(3, 20, 46, 0.3);
+  color: #fff;
+  border: 1px solid #0797a7;
+}
+.container
+  #main
+  .creditArea
+  .el-form-item
+  .el-form-item__content
+  .el-select:nth-of-type(2) {
+  margin-left: 53px;
+}
+
+.el-select-dropdown .el-select-dropdown__list {
+  padding: 0;
+}
+
+/* 单独的信用评价填报入口底部样式 */
+.container #main .creditArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 438px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的信用评价填报入口底部elementUI样式  */
+.container #main .creditArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .creditArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+/* 单独的客户类型填报入口样式 */
+.container #main .customerArea {
+  position: absolute;
+  width: 760px;
+  height: 274px;
+  left: 460px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+/* 单独的客户类型填报入口头部样式 */
+.container #main .customerArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .customerArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .customerArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .customerArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+/* 单独的客户类型 客户类型区域样式 */
+.container #main .customerArea {
+  position: relative;
+  margin-left: 48px;
+}
+
+/* 修改客户类型区域elementUI样式 */
+.container #main .customerArea .el-form-item .el-form-item__content .el-select {
+  width: 582px;
+  margin-right: 18px;
+}
+.container
+  #main
+  .customerArea
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input
+  .el-input__inner {
+  border: 1px solid #0797a7;
+  background: rgba(3, 20, 46, 0.3);
+  color: #fff;
+}
+.container #main .customerArea .el-form-item {
+  margin-top: 74px;
+  margin-left: 24px;
+}
+.container #main .customerArea .el-form-item:nth-of-type(2) {
+  margin-top: 12px;
+}
+.container #main .customerArea .el-form-item .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+
+/* 单独的客户类型填报入口底部样式 */
+.container #main .customerArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 340px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的类型填报入口底部elementUI样式  */
+.container #main .customerArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .customerArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+/* 单独的多元化采购填报入口样式 */
+.container #main .purchaseArea {
+  position: absolute;
+  width: 760px;
+  height: 244px;
+  left: 500px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+
+/* 单独的客多元化采购填报入口头部样式 */
+.container #main .purchaseArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .purchaseArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .purchaseArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .purchaseArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+/* 多元化采购区域 */
+.container #main .purchaseArea .el-form .purchase-area {
+  position: relative;
+  margin-top: 77px;
+  margin-left: 42px;
+}
+.container
+  #main
+  .purchaseArea
+  .el-form
+  .purchase-area
+  .el-form-item
+  .el-form-item__content
+  .el-select {
+  width: 582px;
+}
+.container
+  #main
+  .purchaseArea
+  .el-form
+  .purchase-area
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input
+  .el-input__inner {
+  border: 1px solid #0797a7;
+  background: rgba(3, 20, 46, 0.3);
+  color: #fff;
+}
+/* 修改多元化采购区域elementUI样式 */
+.container #main .purchaseArea .el-form .purchase-area .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .purchaseArea
+  .el-form
+  .purchase-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+  /* line-height: 24px; */
+}
+
+/* 单独的多元化采购填报入口底部样式 */
+.container #main .purchaseArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 309px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的多元化采购填报入口底部elementUI样式  */
+.container #main .purchaseArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .purchaseArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+/* 单独的带动作用填报入口样式 */
+.container #main .driveArea {
+  position: absolute;
+  width: 760px;
+  height: 244px;
+  left: 500px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+/* 单独的多元化填报入口头部样式 */
+.container #main .driveArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .driveArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .driveArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .driveArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+/* 单独的带动作用 带动作用区域样式 */
+.container #main .driveArea .el-form .drive-area {
+  position: relative;
+  margin-top: 27px;
+  margin-left: 48px;
+}
+.container
+  #main
+  .driveArea
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__content
+  > span {
+  color: #fff;
+  font-size: 12px;
+}
+/* 带动作用区域修改elementUI样式 */
+.container
+  #main
+  .driveArea
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__content
+  .el-select {
+  width: 582px;
+  margin-right: 18px;
+}
+.container
+  #main
+  .driveArea
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input
+  .el-input__inner {
+  border: 1px solid #0797a7;
+  background: rgba(3, 20, 46, 0.3);
+  color: #fff;
+}
+.container #main .driveArea .el-form .drive-area .el-form-item {
+  margin-top: 64px;
+  margin-left: -8px;
+}
+.container
+  #main
+  .driveArea
+  .el-form
+  .drive-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+/* 单独的带动作用填报入口底部样式 */
+.container #main .driveArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 309px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的带动作用填报入口底部elementUI样式  */
+.container #main .driveArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .driveArea .el-form .entrance-bottom .el-button--primary {
   width: 84px;
   height: 30px;
   position: absolute;
