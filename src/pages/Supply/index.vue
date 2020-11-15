@@ -106,17 +106,17 @@
                   <a @click="showEntrance">填报入口</a>
                 </div>
               </div>
-              <!-- <div class="score">
+              <div class="score">
                 <div class="fill"></div>
-              </div> -->
-              <el-progress
+              </div>
+              <!-- <el-progress
                 :percentage="86"
                 :show-text="false"
                 color="#fcb018"
                 style="height: 22px"
-              ></el-progress>
+              ></el-progress> -->
               <!-- 表格区域 -->
-              <!-- <table>
+              <table>
                 <tr>
                   <th>排名</th>
                   <th>客户</th>
@@ -206,7 +206,7 @@
                     </div>
                   </td>
                 </tr>
-              </table> -->
+              </table>
               <!-- <el-table
                 :data="tableData1"
                 style="width: 100%"
@@ -534,7 +534,7 @@
                   <div class="gHeader">
                     <span>采购均价评估</span>
                   </div>
-                  <el-form-item label="采购比重">
+                  <el-form-item label="采购均价">
                     <el-input
                       v-model="form.averagePrice"
                       placeholder="得分"
@@ -623,8 +623,8 @@
             </div>
             <div class="footer-item2">
               <div class="credit">采购均价</div>
-              <div class="coverage2">
-                <!-- <div class="coverage2-left">
+              <div class="coverage2" @click="showAverageArea">
+                <div class="coverage2-left">
                   <ul class="secondary">
                     <li class="jack">
                       <span>中料</span>
@@ -668,7 +668,7 @@
                     <span>3865</span>
                     <i>采购均价</i>
                   </div>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="footer-item">
@@ -1043,7 +1043,7 @@
               <!-- 填报区域头部 -->
               <div class="entrance-header">
                 <div class="hLeft">
-                  <span>多元化采购</span>
+                  <span>采购比重</span>
                 </div>
                 <div class="hRight" @click="closeProportionArea">X</div>
               </div>
@@ -1084,6 +1084,38 @@
               </div>
             </el-form>
           </div>
+          <!-- 单独的采购均价填报入口 -->
+          <div v-show="isShowAverageArea" class="averageArea">
+            <el-form :model="form" ref="form">
+              <!-- 填报区域头部 -->
+              <div class="entrance-header">
+                <div class="hLeft">
+                  <span>采购均价</span>
+                </div>
+                <div class="hRight" @click="closeAverageArea">X</div>
+              </div>
+              <!-- 采购均价评估 -->
+              <div class="average-area">
+                <el-form-item label="采购均价">
+                  <el-input
+                    v-model="form.averagePrice"
+                    placeholder="得分"
+                  ></el-input>
+                  <span
+                    >得分：（客户的平均采购价格-当季度销售均价）/5
+                    &nbsp;&nbsp;备注：多个产品算均值(吸货得分前三名才能得此附加分)</span
+                  >
+                </el-form-item>
+              </div>
+              <!-- 填报区域底部 -->
+              <div class="entrance-bottom">
+                <el-button size="mini" @click="closeAverageArea">取消</el-button>
+                <el-button type="primary" @click="updateAverageArea" size="mini"
+                  >提交</el-button
+                >
+              </div>
+            </el-form>
+          </div>
         </div>
       </div>
     </div>
@@ -1105,7 +1137,8 @@ export default {
       isShowCustomerArea: false,
       isShowPurchaseArea: false,
       isShowDriveArea: false,
-      isShowProportionArea:false,
+      isShowProportionArea: false,
+      isShowAverageArea: false,
       form: {
         name: "",
         name2: "",
@@ -1264,17 +1297,30 @@ export default {
       this.$message.success("带动作用更新成功");
     },
     // 点击展示采购比重填报
-    showProportionArea(){
-      this.isShowProportionArea = true
+    showProportionArea() {
+      this.isShowProportionArea = true;
     },
     // 点击x或取消关闭采购比重填报
-    closeProportionArea(){
-      this.isShowProportionArea = false
+    closeProportionArea() {
+      this.isShowProportionArea = false;
     },
     // 点击提交更新采购比重
-    updateProportionArea(){
-      this.isShowProportionArea = false
-      this.$message.success("采购比重更新成功")
+    updateProportionArea() {
+      this.isShowProportionArea = false;
+      this.$message.success("采购比重更新成功");
+    },
+    // 点击展示单独的采购均价填报
+    showAverageArea() {
+      this.isShowAverageArea = true;
+    },
+    // 点击x或取消关闭采购均价填报
+    closeAverageArea(){
+      this.isShowAverageArea = false
+    },
+    // 点击提交更新采购均价
+    updateAverageArea(){
+      this.isShowAverageArea = false
+      this.$message.success('采购均价更新成功')
     }
   },
   components: {
@@ -1706,6 +1752,9 @@ export default {
   text-align: center;
 }
 /* 设置填报入口前日期的样式 */
+.el-picker-panel.el-date-picker.el-popper[x-placement^="bottom"]{
+  margin-top:20px;
+}
 .container
   #main
   .main-header
@@ -1769,7 +1818,7 @@ export default {
   .el-progress-bar__inner {
   border-radius: 0;
 }
-/* .container #main .main-header .mainItem .rectangle .score {
+.container #main .main-header .mainItem .rectangle .score {
   box-sizing: border-box;
   width: 832px;
   height: 22px;
@@ -1780,15 +1829,15 @@ export default {
   width: 785px;
   height: 20px;
   background: #fcb018;
-} */
+}
 /* 表格区域样式 */
-/* .container #main .main-header .mainItem .rectangle > table {
+.container #main .main-header .mainItem .rectangle > table {
   position: relative;
   width: 832px;
   margin: 0 17px 0 21px;
-} */
+}
 /* 伪类 */
-/* .container #main .main-header .mainItem .rectangle > table::before {
+.container #main .main-header .mainItem .rectangle > table::before {
   position: absolute;
   left: 82px;
   content: "";
@@ -1796,8 +1845,8 @@ export default {
   height: 389px;
   opacity: 0.34;
   border: 0.5px solid #00aeef;
-} */
-/* .container #main .main-header .mainItem .rectangle > table::after {
+}
+.container #main .main-header .mainItem .rectangle > table::after {
   position: absolute;
   top: 0;
   left: 332px;
@@ -1806,17 +1855,17 @@ export default {
   height: 389px;
   opacity: 0.34;
   border: 0.5px solid #00aeef;
-} */
-/* .container #main .main-header .mainItem .rectangle > table > tr:nth-of-type(1) {
+}
+.container #main .main-header .mainItem .rectangle > table > tr:nth-of-type(1) {
   height: 48px;
   background: rgba(0, 174, 239, 0.34);
-} */
-/* .container #main .main-header .mainItem .rectangle > table > tr > th {
+}
+.container #main .main-header .mainItem .rectangle > table > tr > th {
   font-size: 16px;
   text-align: center;
   color: #ffffff;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1826,19 +1875,19 @@ export default {
   > th:nth-of-type(3) {
   text-align: left;
   padding-left: 30px;
-} */
-/* .container #main .main-header .mainItem .rectangle > table > tr {
+}
+.container #main .main-header .mainItem .rectangle > table > tr {
   height: 48px;
   border: 1px solid #00aeef;
-} */
+}
 
-/* .container #main .main-header .mainItem .rectangle > table > tr > td {
+.container #main .main-header .mainItem .rectangle > table > tr > td {
   height: 48px;
   font-size: 14px;
   color: #fff;
   text-align: center;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1847,8 +1896,8 @@ export default {
   > tr
   > td:nth-of-type(1) {
   width: 10%;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1857,8 +1906,8 @@ export default {
   > tr
   > td:nth-of-type(2) {
   width: 30%;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1867,8 +1916,8 @@ export default {
   > tr
   > td:nth-of-type(3) {
   width: 60%;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1878,8 +1927,8 @@ export default {
   > td:nth-of-type(3)
   .process {
   position: relative;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1893,8 +1942,8 @@ export default {
   margin-left: 30px;
   border: 1px solid #051c2f;
   background: #051c2f;
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1908,8 +1957,8 @@ export default {
   width: 363px;
   height: 14px;
   background: rgba(103, 215, 253, 0.5);
-} */
-/* .container
+}
+.container
   #main
   .main-header
   .mainItem
@@ -1922,7 +1971,7 @@ export default {
   position: absolute;
   top: 0;
   right: 52px;
-} */
+}
 /* 重写elementUI分页样式 */
 .container #main .main-header .mainItem .rectangle .el-pagination {
   margin: 10px 0 0 133px;
@@ -4149,8 +4198,11 @@ export default {
   border: 1px solid #235464;
   display: flex;
 }
-
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-left {
+/* 设置hover效果 */
+.container #main .footer .footer-item2 .coverage2:hover {
+  cursor: pointer;
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-left {
   width: 274px;
   height: 201px;
   border: 1px dashed #03feff;
@@ -4158,13 +4210,13 @@ export default {
   display: flex;
   justify-content: space-between;
   border-radius: 6px;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-left .secondary {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .secondary {
   box-sizing: border-box;
   margin: 4px 0 4px 4px;
   border: 1px solid #03feff;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4180,9 +4232,9 @@ export default {
   color: #fff;
   text-align: center;
   background: linear-gradient(#0d96b1 0%, #00b294 100%);
-} */
+}
 /* 线的样式 */
-/* .container
+.container
   #main
   .footer
   .footer-item2
@@ -4197,8 +4249,8 @@ export default {
   width: 22px;
   height: 0;
   border: 0.5px solid #00b294;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4213,8 +4265,8 @@ export default {
   width: 8px;
   height: 0;
   border: 0.5px solid #00b294;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4229,8 +4281,8 @@ export default {
   width: 0;
   height: 44px;
   border: 0.5px solid #00b294;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4245,8 +4297,8 @@ export default {
   width: 0;
   height: 44px;
   border: 0.5px solid #00b294;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4261,8 +4313,8 @@ export default {
   width: 0;
   height: 10px;
   border: none;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4276,13 +4328,13 @@ export default {
   line-height: 36px;
   text-align: center;
   color: #03feff;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-left .reduce {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .reduce {
   width: 30px;
   height: 30px;
   margin: 81px 0 88px 8px;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4292,8 +4344,8 @@ export default {
   > img {
   width: 98%;
   height: 98%;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-left .price {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .price {
   position: relative;
   box-sizing: border-box;
   width: 74px;
@@ -4301,9 +4353,9 @@ export default {
   border: 1px solid #03feff;
   margin: 34px 5px 38px 0;
   display: flex;
-} */
+}
 /* 线的样式 */
-/* .container
+.container
   #main
   .footer
   .footer-item2
@@ -4317,8 +4369,8 @@ export default {
   width: 3px;
   height: 0;
   border: 0.5px solid #03feff;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4334,8 +4386,8 @@ export default {
   font-size: 14px;
   padding: 10px 9px;
   color: #fff;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4349,18 +4401,18 @@ export default {
   text-align: center;
   font-size: 20px;
   color: #fff;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right {
   display: flex;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .bery {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .bery {
   width: 30px;
   height: 30px;
   margin: 94px 0 99px 17px;
   position: relative;
-} */
+}
 /* 线的样式 */
-/* .container
+.container
   #main
   .footer
   .footer-item2
@@ -4374,12 +4426,12 @@ export default {
   width: 16px;
   height: 0;
   border: 0.5px solid #03feff;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .bery > img {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .bery > img {
   width: 100%;
   height: 100%;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .cery {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .cery {
   position: relative;
   box-sizing: border-box;
   width: 50px;
@@ -4387,9 +4439,9 @@ export default {
   border: 1px solid #32fdf6;
   border-radius: 50%;
   margin: 86px 0 89px 17px;
-} */
+}
 /* 线的样式 */
-/* .container
+.container
   #main
   .footer
   .footer-item2
@@ -4403,8 +4455,8 @@ export default {
   height: 0;
   width: 15px;
   border: 0.5px solid #03feff;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4417,15 +4469,15 @@ export default {
   left: 17px;
   font-size: 24px;
   color: #03feff;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .dery {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .dery {
   position: relative;
   width: 47px;
   height: 23px;
   margin: 98px 0 102px 26px;
-} */
+}
 /* 线的样式 */
-/* .container
+.container
   #main
   .footer
   .footer-item2
@@ -4439,22 +4491,22 @@ export default {
   height: 0;
   width: 98px;
   border: 0.5px solid #03feff;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .dery > img {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .dery > img {
   width: 100%;
   height: 100%;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .eery {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .eery {
   position: relative;
   width: 179px;
   height: 179px;
   margin: 21px 39px 25px 12px;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > img {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > img {
   width: 100%;
   height: 100%;
-} */
-/* .container
+}
+.container
   #main
   .footer
   .footer-item2
@@ -4467,14 +4519,14 @@ export default {
   left: 58px;
   font-size: 26px;
   color: #32fdf6;
-} */
-/* .container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > i {
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right .eery > i {
   position: absolute;
   top: 100px;
   left: 58px;
   font-size: 16px;
   color: #fff;
-} */
+}
 
 /* 单独的品质特性填报入口 */
 .container #main .qualityArea {
@@ -5633,6 +5685,227 @@ export default {
   color: #fff;
 }
 .container #main .driveArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+/* 单独的采购比重填报入口 */
+.container #main .proportionArea {
+  position: absolute;
+  width: 760px;
+  height: 244px;
+  left: 500px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+/* 单独的采购比重填报入口头部样式 */
+.container #main .proportionArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .proportionArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .proportionArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .proportionArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+.container #main .proportionArea .el-form .proportion-area {
+  position: relative;
+  margin-top: 77px;
+  margin-left: 28px;
+}
+/* 修改采购比重区域elementUI样式 */
+.container
+  #main
+  .proportionArea
+  .el-form
+  .proportion-area
+  .el-form-item
+  .el-form-item__content
+  .el-select {
+  width: 582px;
+  margin-right: 18px;
+}
+.container
+  #main
+  .proportionArea
+  .el-form
+  .proportion-area
+  .el-form-item
+  .el-form-item__content
+  .el-select
+  .el-input
+  .el-input__inner {
+  border: 1px solid #0797a7;
+  background: rgba(3, 20, 46, 0.3);
+  color: #fff;
+}
+.container #main .proportionArea .el-form .proportion-area .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container
+  #main
+  .proportionArea
+  .el-form
+  .proportion-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+
+/* 单独的采购比重填报入口底部样式 */
+.container #main .proportionArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 309px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的采购比重填报入口底部elementUI样式  */
+.container #main .proportionArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .proportionArea .el-form .entrance-bottom .el-button--primary {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 391px;
+  background: #2294d5;
+  border-radius: 4px;
+}
+
+/* 单独的采购均价填报入口样式 */
+.container #main .averageArea {
+  position: absolute;
+  width: 760px;
+  height: 244px;
+  left: 500px;
+  top: 30px;
+  z-index: 5;
+  background: rgba(9, 38, 78, 0.9);
+  border: 1px solid #2294d5;
+}
+/* 单独的采购均价填报入口头部样式 */
+.container #main .averageArea .el-form .entrance-header {
+  position: fixed;
+  top: 138px;
+  width: 759px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(19, 74, 145, 0.38);
+  display: flex;
+  justify-content: space-between;
+}
+.container #main .averageArea .el-form .entrance-header .hLeft {
+  margin-left: 19px;
+}
+.container #main .averageArea .el-form .entrance-header .hRight {
+  margin-right: 20px;
+}
+.container #main .averageArea .el-form .entrance-header .hRight:hover {
+  color: #e1a630;
+  cursor: pointer;
+}
+/* 单独的采购均价 采购均价区域样式 */
+.container #main .averageArea .el-form .average-area {
+  position: relative;
+  margin-top: 67px;
+  margin-left: 28px;
+}
+/* 修改购均价区域elementUI样式 */
+.container #main .averageArea .el-form .average-area
+  .el-form-item
+  .el-form-item__content
+  .el-input {
+  width: 100px;
+  margin-right: 550px;
+  text-align: center;
+}
+.container #main .averageArea .el-form .average-area
+  .el-form-item
+  .el-form-item__content
+  > span {
+  color: #fff;
+}
+.container #main .averageArea .el-form .average-area
+  .el-form-item
+  .el-form-item__content
+  .el-input
+  .el-input__inner {
+  border: 1px solid #0797a7;
+  background: rgba(3, 20, 46, 0.3);
+  color: #fff;
+}
+.container #main .averageArea .el-form .average-area
+  .el-form-item {
+  margin-top: 14px;
+  margin-left: 4px;
+}
+.container #main .averageArea .el-form .average-area
+  .el-form-item
+  .el-form-item__label {
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+}
+
+
+
+/* 单独的采购比重填报入口底部样式 */
+.container #main .averageArea .el-form .entrance-bottom {
+  position: fixed;
+  top: 309px;
+  width: 759px;
+  height: 73px;
+  background: #09264e;
+  box-shadow: 0px 0px 40px 0px rgba(12, 21, 48);
+}
+/* 修改单独的采购比重填报入口底部elementUI样式  */
+.container #main .averageArea .el-form .entrance-bottom .el-button--default {
+  width: 84px;
+  height: 30px;
+  position: absolute;
+  top: 22px;
+  left: 297px;
+  background: #09264e;
+  border: 1px solid #2294d5;
+  border-radius: 4px;
+  color: #fff;
+}
+.container #main .averageArea .el-form .entrance-bottom .el-button--primary {
   width: 84px;
   height: 30px;
   position: absolute;

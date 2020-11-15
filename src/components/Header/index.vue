@@ -57,7 +57,7 @@
             <!-- <li class="line">|</li> -->
             <li class="nav-right-item">
               <img src="./image/yuce.png" />
-              <a>价格预测</a>
+              <a>客户分析</a>
             </li>
           </ul>
         </div>
