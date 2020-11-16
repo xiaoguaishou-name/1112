@@ -98,7 +98,7 @@
                 </div>
                 <div class="info-right">
                   <el-date-picker
-                    v-model="value1"
+                    v-model="date"
                     type="date"
                     placeholder="选择日期"
                   >
@@ -241,15 +241,15 @@
               <el-form ref="form" :model="form" label-width="80px">
                 <!-- 头部区域 -->
                 <div class="mHeader">
-                  <el-form-item label="填报人姓名">
+                  <el-form-item label="客户名称">
                     <el-select
-                      v-model="form.name"
-                      placeholder="请选择填报人姓名"
+                      v-model="form.cCusName"
+                      placeholder="请选择客户名称"
                     >
                       <el-input
-                        placeholder="请输入姓名查询"
+                        placeholder="请输入客户名称查询"
                         suffix-icon="el-icon-search"
-                        v-model="form.name2"
+                        v-model="form.cCusName2"
                       >
                       </el-input>
                       <el-option label="张三" value="shanghai"></el-option>
@@ -261,7 +261,7 @@
                   </el-form-item>
                   <el-form-item label="填报日期">
                     <el-date-picker
-                      v-model="form.date"
+                      v-model="form.sysDate"
                       type="date"
                       placeholder="请选择填报日期"
                     >
@@ -273,10 +273,10 @@
                   <div class="gHeader">
                     <span>品质特性</span>
                   </div>
-                  <el-form-item label="产品规模">
+                  <el-form-item label="产能规模">
                     <el-select
-                      v-model="form.product"
-                      placeholder="请选择产品规模"
+                      v-model="form.proSca"
+                      placeholder="请选择产能规模"
                     >
                       <el-option label="0" value="0"></el-option>
                     </el-select>
@@ -286,13 +286,13 @@
                       v-model="form.status"
                       placeholder="请选择行业地位"
                     >
-                      <el-option label="其他" value="0"></el-option>
+                      <el-option label="0：其他" value="0"></el-option>
                       <el-option
-                        label="在当地销售规模处于前十"
+                        label="1：在当地销售规模处于前十"
                         value="1"
                       ></el-option>
                       <el-option
-                        label="在当地销售规模处于前三"
+                        label="2：在当地销售规模处于前三"
                         value="2"
                       ></el-option>
                     </el-select>
@@ -302,33 +302,33 @@
                       v-model="form.duration"
                       placeholder="请选择业务关系持续期"
                     >
-                      <el-option label="其他" value="0"></el-option>
+                      <el-option label="0：其他" value="0"></el-option>
                       <el-option
-                        label="与本公司的业务关系持续2-12个月"
+                        label="1：与本公司的业务关系持续2-12个月"
                         value="1"
                       ></el-option>
                       <el-option
-                        label="与本公司的业务关系持续1-2年"
+                        label="3：与本公司的业务关系持续1-2年"
                         value="3"
                       ></el-option>
                       <el-option
-                        label="与本公司的业务关系持续2年以上"
+                        label="5：与本公司的业务关系持续2年以上"
                         value="5"
                       ></el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item label="业务关系强度">
                     <el-select
-                      v-model="form.intensity"
+                      v-model="form.relDeg"
                       placeholder="请选择业务关系强度"
                     >
-                      <el-option label="偶尔在本公司提货" value="1"></el-option>
+                      <el-option label="1：偶尔在本公司提货" value="1"></el-option>
                       <el-option
-                        label="以本公司为次供货商"
+                        label="2：以本公司为次供货商"
                         value="2"
                       ></el-option>
                       <el-option
-                        label="与本公司为主供货商"
+                        label="3：与本公司为主供货商"
                         value="3"
                       ></el-option>
                     </el-select>
@@ -400,20 +400,20 @@
                   </div>
                   <el-form-item label="现金比例">
                     <el-input
-                      v-model="form.score"
+                      v-model="form.cashRat"
                       placeholder="得分"
                     ></el-input>
                     <span>得分= (现金金额/销售总金额)*15</span>
                   </el-form-item>
                   <el-form-item label="配合度">
                     <el-select
-                      v-model="form.acceptance"
+                      v-model="form.cooperDeg"
                       placeholder="默认为0"
                       style="width: 523px"
                     >
-                      <el-option label="其他" value="0"></el-option>
+                      <el-option label="0：其他" value="0"></el-option>
                       <el-option
-                        label="承兑汇票补充证明材料在规定期限内（一周内）返回"
+                        label="3：承兑汇票补充证明材料在规定期限内（一周内）返回"
                         value="3"
                       ></el-option>
                     </el-select>
@@ -422,9 +422,9 @@
                       placeholder="默认为0"
                       style="width: 523px"
                     >
-                      <el-option label="其他" value="0"></el-option>
+                      <el-option label="0：其他" value="0"></el-option>
                       <el-option
-                        label="合同、发货确认单据等在规定期限内（一周内）返回"
+                        label="3：合同、发货确认单据等在规定期限内（一周内）返回"
                         value="3"
                       ></el-option>
                     </el-select>
@@ -440,9 +440,9 @@
                       v-model="form.purchase"
                       placeholder="请选择多元化采购能力"
                     >
-                      <el-option label="其他" value="0"></el-option>
+                      <el-option label="0：其他" value="0"></el-option>
                       <el-option
-                        label="客户兰炭采购品种>=2类（大料、中料、小料、焦面）"
+                        label="4：客户兰炭采购品种>=2类（大料、中料、小料、焦面）"
                         value="4"
                       ></el-option>
                     </el-select>
@@ -455,7 +455,7 @@
                   </div>
                   <el-form-item label="带动作用">
                     <el-select
-                      v-model="form.drive"
+                      v-model="form.driveEff"
                       placeholder="请选择带动作用"
                     >
                       <el-option label="0：其他" value="0"></el-option>
@@ -486,7 +486,7 @@
                   </div>
                   <el-form-item label="性质">
                     <el-select
-                      v-model="form.customerNature"
+                      v-model="form.category"
                       placeholder="请选择性质"
                     >
                       <el-option label="3：贸易商客户" value="3"></el-option>
@@ -495,7 +495,7 @@
                   </el-form-item>
                   <el-form-item label="区域">
                     <el-select
-                      v-model="form.customerArea"
+                      v-model="form.region"
                       placeholder="请选择区域"
                     >
                       <el-option label="0：陕西省内客户" value="0"></el-option>
@@ -510,7 +510,7 @@
                   </div>
                   <el-form-item label="采购比重">
                     <el-select
-                      v-model="form.proportion"
+                      v-model="form.purPro"
                       placeholder="请选择采购比重"
                     >
                       <el-option label="0：其他" value="0"></el-option>
@@ -705,23 +705,23 @@
               </div>
               <!-- 品质特性区域 -->
               <div class="quality-area">
-                <el-form-item label="产品规模">
+                <el-form-item label="产能规模">
                   <el-select
-                    v-model="form.product"
-                    placeholder="请选择产品规模"
+                    v-model="form.proSca"
+                    placeholder="请选择产能规模"
                   >
                     <el-option label="0" value="0"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="行业地位">
                   <el-select v-model="form.status" placeholder="请选择行业地位">
-                    <el-option label="其他" value="0"></el-option>
+                    <el-option label="0：其他" value="0"></el-option>
                     <el-option
-                      label="在当地销售规模处于前十"
+                      label="1：在当地销售规模处于前十"
                       value="1"
                     ></el-option>
                     <el-option
-                      label="在当地销售规模处于前三"
+                      label="2：在当地销售规模处于前三"
                       value="2"
                     ></el-option>
                   </el-select>
@@ -731,29 +731,29 @@
                     v-model="form.duration"
                     placeholder="请选择业务关系持续期"
                   >
-                    <el-option label="其他" value="0"></el-option>
+                    <el-option label="0：其他" value="0"></el-option>
                     <el-option
-                      label="与本公司的业务关系持续2-12个月"
+                      label="1：与本公司的业务关系持续2-12个月"
                       value="1"
                     ></el-option>
                     <el-option
-                      label="与本公司的业务关系持续1-2年"
+                      label="3：与本公司的业务关系持续1-2年"
                       value="3"
                     ></el-option>
                     <el-option
-                      label="与本公司的业务关系持续2年以上"
+                      label="5：与本公司的业务关系持续2年以上"
                       value="5"
                     ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="业务关系强度">
                   <el-select
-                    v-model="form.intensity"
+                    v-model="form.relDeg"
                     placeholder="请选择业务关系强度"
                   >
-                    <el-option label="偶尔在本公司提货" value="1"></el-option>
-                    <el-option label="以本公司为次供货商" value="2"></el-option>
-                    <el-option label="与本公司为主供货商" value="3"></el-option>
+                    <el-option label="1：偶尔在本公司提货" value="1"></el-option>
+                    <el-option label="2：以本公司为次供货商" value="2"></el-option>
+                    <el-option label="3：与本公司为主供货商" value="3"></el-option>
                   </el-select>
                 </el-form-item>
               </div>
@@ -872,12 +872,12 @@
               <!-- 信用评价区域 -->
               <div class="credit-area">
                 <el-form-item label="现金比例">
-                  <el-input v-model="form.score" placeholder="得分"></el-input>
+                  <el-input v-model="form.cashRat" placeholder="得分"></el-input>
                   <span>得分= (现金金额/销售总金额)*15</span>
                 </el-form-item>
                 <el-form-item label="配合度">
                   <el-select
-                    v-model="form.acceptance"
+                    v-model="form.cooperDeg"
                     placeholder="默认为0"
                     style="width: 523px"
                   >
@@ -923,7 +923,7 @@
               <div class="customer-area">
                 <el-form-item label="性质">
                   <el-select
-                    v-model="form.customerNature"
+                    v-model="form.category"
                     placeholder="请选择性质"
                   >
                     <el-option label="3：贸易商客户" value="3"></el-option>
@@ -932,7 +932,7 @@
                 </el-form-item>
                 <el-form-item label="区域">
                   <el-select
-                    v-model="form.customerArea"
+                    v-model="form.region"
                     placeholder="请选择区域"
                   >
                     <el-option label="0：陕西省内客户" value="0"></el-option>
@@ -971,9 +971,9 @@
                     v-model="form.purchase"
                     placeholder="请选择多元化采购能力"
                   >
-                    <el-option label="其他" value="0"></el-option>
+                    <el-option label="0：其他" value="0"></el-option>
                     <el-option
-                      label="客户兰炭采购品种>=2类（大料、中料、小料、焦面）"
+                      label="4：客户兰炭采购品种>=2类（大料、中料、小料、焦面）"
                       value="4"
                     ></el-option>
                   </el-select>
@@ -1006,7 +1006,7 @@
               <!-- 带动作用区域 -->
               <div class="drive-area">
                 <el-form-item label="带动作用">
-                  <el-select v-model="form.drive" placeholder="请选择带动作用">
+                  <el-select v-model="form.driveEff" placeholder="请选择带动作用">
                     <el-option label="0：其他" value="0"></el-option>
                     <el-option
                       label="1：当天购买产品起末要带动作用"
@@ -1051,7 +1051,7 @@
               <div class="proportion-area">
                 <el-form-item label="采购比重">
                   <el-select
-                    v-model="form.proportion"
+                    v-model="form.purPro"
                     placeholder="请选择采购比重"
                   >
                     <el-option label="0：其他" value="0"></el-option>
@@ -1128,7 +1128,8 @@ export default {
   name: "Supply",
   data() {
     return {
-      value1: "",
+      date: "",
+      // 控制显示与隐藏
       isShow: false,
       isShowQualityArea: false,
       isShowPowerArea: false,
@@ -1140,24 +1141,26 @@ export default {
       isShowProportionArea: false,
       isShowAverageArea: false,
       form: {
-        name: "",
-        name2: "",
-        date: "",
-        product: "",
+        // 必须传给后台数据
+        cCusName: "",
+        sysDate: "",
+        proSca: "",
         status: "",
+        relDeg: "",
+        cashRat: "",
+        cooperDeg: "",
+        contract:"",
+        driveEff: "",
+        category:"",
+        region:"",
+        purPro:"",
+        // 非必须
+        cCusName2: "",
         duration: "",
-        intensity: "",
         power: "",
         shop: "",
-        cash: "",
         total: "",
-        score: "",
-        acceptance: "",
         purchase: "",
-        drive: "",
-        customerNature: "",
-        customerArea: "",
-        proportion: "",
         averagePrice: "",
       },
       // tableData1: [
@@ -1200,8 +1203,9 @@ export default {
     },
     // 点击提交填报回调
     onSubmit() {
+      console.log(this.form)
       this.isShow = false;
-      this.$message.success("提交成功");
+      this.$message.success("填报提交成功");
     },
     // 点击展示单独的品质特性填报入口
     showQualityArea() {
