@@ -322,7 +322,10 @@
                       v-model="form.relDeg"
                       placeholder="请选择业务关系强度"
                     >
-                      <el-option label="1：偶尔在本公司提货" value="1"></el-option>
+                      <el-option
+                        label="1：偶尔在本公司提货"
+                        value="1"
+                      ></el-option>
                       <el-option
                         label="2：以本公司为次供货商"
                         value="2"
@@ -407,7 +410,7 @@
                   </el-form-item>
                   <el-form-item label="配合度">
                     <el-select
-                      v-model="form.cooperDeg"
+                      v-model="form.cooperDeg1"
                       placeholder="默认为0"
                       style="width: 523px"
                     >
@@ -418,7 +421,7 @@
                       ></el-option>
                     </el-select>
                     <el-select
-                      v-model="form.contract"
+                      v-model="form.cooperDeg2"
                       placeholder="默认为0"
                       style="width: 523px"
                     >
@@ -485,19 +488,13 @@
                     <span>客户类型</span>
                   </div>
                   <el-form-item label="性质">
-                    <el-select
-                      v-model="form.category"
-                      placeholder="请选择性质"
-                    >
+                    <el-select v-model="form.category" placeholder="请选择性质">
                       <el-option label="3：贸易商客户" value="3"></el-option>
                       <el-option label="5：终端客户" value="5"></el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item label="区域">
-                    <el-select
-                      v-model="form.region"
-                      placeholder="请选择区域"
-                    >
+                    <el-select v-model="form.region" placeholder="请选择区域">
                       <el-option label="0：陕西省内客户" value="0"></el-option>
                       <el-option label="2：陕西省外客户" value="2"></el-option>
                     </el-select>
@@ -625,6 +622,26 @@
               <div class="credit">采购均价</div>
               <div class="coverage2" @click="showAverageArea">
                 <div class="coverage2-left">
+                  <el-table :data="tableData" border size="mini" height="160px" width="476px">
+                    <el-table-column prop="title"> </el-table-column>
+                    <el-table-column prop="num1" label="大料" width="60">
+                    </el-table-column>
+                    <el-table-column prop="num2" label="中料" width="60">
+                    </el-table-column>
+                    <el-table-column prop="num3" label="小料">
+                    </el-table-column>
+                    <el-table-column prop="num4" label="焦面">
+                    </el-table-column>
+                    <el-table-column prop="num5" label="面煤">
+                    </el-table-column>
+                  </el-table>
+                </div>
+                <div class="coverage2-right">
+                  <img src="./image/19.png" alt="">
+                  <span>3865</span>
+                  <i>采购均价得分</i>
+                </div>
+                <!-- <div class="coverage2-left">
                   <ul class="secondary">
                     <li class="jack">
                       <span>中料</span>
@@ -668,7 +685,7 @@
                     <span>3865</span>
                     <i>采购均价</i>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="footer-item">
@@ -706,10 +723,7 @@
               <!-- 品质特性区域 -->
               <div class="quality-area">
                 <el-form-item label="产能规模">
-                  <el-select
-                    v-model="form.proSca"
-                    placeholder="请选择产能规模"
-                  >
+                  <el-select v-model="form.proSca" placeholder="请选择产能规模">
                     <el-option label="0" value="0"></el-option>
                   </el-select>
                 </el-form-item>
@@ -751,9 +765,18 @@
                     v-model="form.relDeg"
                     placeholder="请选择业务关系强度"
                   >
-                    <el-option label="1：偶尔在本公司提货" value="1"></el-option>
-                    <el-option label="2：以本公司为次供货商" value="2"></el-option>
-                    <el-option label="3：与本公司为主供货商" value="3"></el-option>
+                    <el-option
+                      label="1：偶尔在本公司提货"
+                      value="1"
+                    ></el-option>
+                    <el-option
+                      label="2：以本公司为次供货商"
+                      value="2"
+                    ></el-option>
+                    <el-option
+                      label="3：与本公司为主供货商"
+                      value="3"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </div>
@@ -872,12 +895,15 @@
               <!-- 信用评价区域 -->
               <div class="credit-area">
                 <el-form-item label="现金比例">
-                  <el-input v-model="form.cashRat" placeholder="得分"></el-input>
+                  <el-input
+                    v-model="form.cashRat"
+                    placeholder="得分"
+                  ></el-input>
                   <span>得分= (现金金额/销售总金额)*15</span>
                 </el-form-item>
                 <el-form-item label="配合度">
                   <el-select
-                    v-model="form.cooperDeg"
+                    v-model="form.cooperDeg1"
                     placeholder="默认为0"
                     style="width: 523px"
                   >
@@ -888,7 +914,7 @@
                     ></el-option>
                   </el-select>
                   <el-select
-                    v-model="form.contract"
+                    v-model="form.cooperDeg2"
                     placeholder="默认为0"
                     style="width: 523px"
                   >
@@ -922,19 +948,13 @@
               <!-- 客户类型区域 -->
               <div class="customer-area">
                 <el-form-item label="性质">
-                  <el-select
-                    v-model="form.category"
-                    placeholder="请选择性质"
-                  >
+                  <el-select v-model="form.category" placeholder="请选择性质">
                     <el-option label="3：贸易商客户" value="3"></el-option>
                     <el-option label="5：终端客户" value="5"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="区域">
-                  <el-select
-                    v-model="form.region"
-                    placeholder="请选择区域"
-                  >
+                  <el-select v-model="form.region" placeholder="请选择区域">
                     <el-option label="0：陕西省内客户" value="0"></el-option>
                     <el-option label="2：陕西省外客户" value="2"></el-option>
                   </el-select>
@@ -1006,7 +1026,10 @@
               <!-- 带动作用区域 -->
               <div class="drive-area">
                 <el-form-item label="带动作用">
-                  <el-select v-model="form.driveEff" placeholder="请选择带动作用">
+                  <el-select
+                    v-model="form.driveEff"
+                    placeholder="请选择带动作用"
+                  >
                     <el-option label="0：其他" value="0"></el-option>
                     <el-option
                       label="1：当天购买产品起末要带动作用"
@@ -1050,10 +1073,7 @@
               <!-- 采购比重区域 -->
               <div class="proportion-area">
                 <el-form-item label="采购比重">
-                  <el-select
-                    v-model="form.purPro"
-                    placeholder="请选择采购比重"
-                  >
+                  <el-select v-model="form.purPro" placeholder="请选择采购比重">
                     <el-option label="0：其他" value="0"></el-option>
                     <el-option
                       label="1：当天采购量占末要需求量"
@@ -1109,7 +1129,9 @@
               </div>
               <!-- 填报区域底部 -->
               <div class="entrance-bottom">
-                <el-button size="mini" @click="closeAverageArea">取消</el-button>
+                <el-button size="mini" @click="closeAverageArea"
+                  >取消</el-button
+                >
                 <el-button type="primary" @click="updateAverageArea" size="mini"
                   >提交</el-button
                 >
@@ -1142,26 +1164,25 @@ export default {
       isShowAverageArea: false,
       form: {
         // 必须传给后台数据
-        cCusName: "",
-        sysDate: "",
-        proSca: "",
-        status: "",
-        relDeg: "",
-        cashRat: "",
-        cooperDeg: "",
-        contract:"",
-        driveEff: "",
-        category:"",
-        region:"",
-        purPro:"",
+        cCusName: "",//客户名称
+        sysDate: "",//系统日期
+        proSca: "",//产能规模
+        status: "",//行业地位
+        relDeg: "",//业务关系强度
+        cashRat: "",//现金比例
+        cooperDeg1: "",//配合度1
+        cooperDeg2: "",//配合度2
+        driveEff: "",//带动作用
+        category: "",//客户性质
+        region: "",//客户区域
+        purPro: "",//采购比重
         // 非必须
-        cCusName2: "",
-        duration: "",
-        power: "",
-        shop: "",
-        total: "",
-        purchase: "",
-        averagePrice: "",
+        cCusName2: "",//搜索框搜索名
+        duration: "",//业务关系持续期
+        power: "",//吸货能力
+        shop: "",//均衡购货能力
+        purchase: "",//多元化采购
+        averagePrice: "",//采购均价
       },
       // tableData1: [
       //   {
@@ -1190,6 +1211,33 @@ export default {
       //     address: "上海市普陀区金沙江路 1516 弄",
       //   },
       // ],
+      // 采购均价左侧区域假数据
+      tableData: [
+        {
+          title:"客户本季度采购均价",
+          num1:"1",
+          num2:"2",
+          num3:"3",
+          num4:"4",
+          num5:"5",  
+        },
+        {
+          title:"本季度所有采购均价",
+          num1:"1",
+          num2:"2",
+          num3:"3",
+          num4:"4",
+          num5:"5",
+        },
+        {
+          title:"差价",
+          num1:"1",
+          num2:"2",
+          num3:"3",
+          num4:"4",
+          num5:"5",
+        },
+      ],
     };
   },
   methods: {
@@ -1203,7 +1251,7 @@ export default {
     },
     // 点击提交填报回调
     onSubmit() {
-      console.log(this.form)
+      console.log(this.form);
       this.isShow = false;
       this.$message.success("填报提交成功");
     },
@@ -1217,6 +1265,7 @@ export default {
     },
     // 点击提交更新品质特性回调
     updateQualityArea() {
+      console.log(this.form);
       this.isShowQualityArea = false;
       this.$message.success("更新品质特性成功");
     },
@@ -1230,6 +1279,7 @@ export default {
     },
     // 点击提交更新能力评估回调
     updatePowerArea() {
+      console.log(this.form);
       this.isShowPowerArea = false;
       this.$message.success("更新能力评估成功");
     },
@@ -1243,6 +1293,7 @@ export default {
     },
     // 点击提交更新均衡购货评价回调
     updateShopArea() {
+      console.log(this.form);
       this.isShowShopArea = false;
       this.$message.success("更新均衡购货评价成功");
     },
@@ -1256,6 +1307,7 @@ export default {
     },
     // 点击提交更新信用评价
     updateCreditArea() {
+      console.log(this.form);
       this.isShowCreditArea = false;
       this.$message.success("更新信用评价成功");
     },
@@ -1269,6 +1321,7 @@ export default {
     },
     // 点击提交后的更新客户类型回调
     updateCustomerArea() {
+      console.log(this.form);
       this.isShowCustomerArea = false;
       this.$message.success("客户类型更新成功");
     },
@@ -1282,6 +1335,7 @@ export default {
     },
     // 点击提交后更新多元化采购
     updatePurchaseArea() {
+      console.log(this.form);
       this.isShowPurchaseArea = false;
       this.$message.success("多元化采购更新成功");
     },
@@ -1297,6 +1351,7 @@ export default {
 
     // 点击提交更新带动作用
     updateDriveArea() {
+      console.log(this.form);
       this.isShowDriveArea = false;
       this.$message.success("带动作用更新成功");
     },
@@ -1310,6 +1365,7 @@ export default {
     },
     // 点击提交更新采购比重
     updateProportionArea() {
+      console.log(this.form);
       this.isShowProportionArea = false;
       this.$message.success("采购比重更新成功");
     },
@@ -1318,14 +1374,15 @@ export default {
       this.isShowAverageArea = true;
     },
     // 点击x或取消关闭采购均价填报
-    closeAverageArea(){
-      this.isShowAverageArea = false
+    closeAverageArea() {
+      this.isShowAverageArea = false;
     },
     // 点击提交更新采购均价
-    updateAverageArea(){
-      this.isShowAverageArea = false
-      this.$message.success('采购均价更新成功')
-    }
+    updateAverageArea() {
+      console.log(this.form);
+      this.isShowAverageArea = false;
+      this.$message.success("采购均价更新成功");
+    },
   },
   components: {
     Header,
@@ -1756,8 +1813,8 @@ export default {
   text-align: center;
 }
 /* 设置填报入口前日期的样式 */
-.el-picker-panel.el-date-picker.el-popper[x-placement^="bottom"]{
-  margin-top:20px;
+.el-picker-panel.el-date-picker.el-popper[x-placement^="bottom"] {
+  margin-top: 20px;
 }
 .container
   #main
@@ -4201,12 +4258,88 @@ export default {
   box-sizing: border-box;
   border: 1px solid #235464;
   display: flex;
+  justify-content: space-between;
 }
 /* 设置hover效果 */
 .container #main .footer .footer-item2 .coverage2:hover {
   cursor: pointer;
 }
+/* 采购均价左边区域样式 */
 .container #main .footer .footer-item2 .coverage2 .coverage2-left {
+  width: 477px;
+  height: 190px;
+  margin: 24px 0 17px 19px;
+}
+/* 修改采购均价左侧表格ele样式 */
+.el-table th{
+  background: linear-gradient(#0d96b1 0%, #00b294 100%);
+  color:#fff;
+  font-size:12px;
+  text-align: center;
+}
+.el-table tr{
+  background: #235464;
+}
+.el-table__row .cell{
+  text-align: center;
+  color:#fff;
+  font-size:12px;
+}
+.el-table__row .el-table_1_column_1{
+  text-align: left;
+}
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+  background: #235464;
+}
+.el-table--border td{
+  border-right:1px solid #0a5a83;
+}
+.el-table td{
+  border-bottom:1px solid #0a5a83;
+}
+.el-table--scrollable-x .el-table__body-wrapper{
+  overflow: hidden;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before{
+  background-color: #235464;
+}
+.el-table--border th{
+  border-color:#235464;
+}
+.el-table th.is-leaf{
+  border:1px solid #235464;
+}
+.el-table--border, .el-table--group{
+  border:1px solid #235464;
+}
+/* 采购均价右侧样式 */
+.container #main .footer .footer-item2 .coverage2 .coverage2-right{
+  position: relative;
+  width: 179px;
+  height: 179px;
+  display: flex;
+  margin:25px 25px 25px 0;
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right > img{
+  width: 100%;
+  height: 100%;
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right > span{
+  position: absolute;
+  top:54px;
+  left:60px;
+  font-size: 24px;
+  color: #32fdf6;
+}
+.container #main .footer .footer-item2 .coverage2 .coverage2-right > i{
+  position: absolute;
+  top:90px;
+  left:48px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* .container #main .footer .footer-item2 .coverage2 .coverage2-left {
   width: 274px;
   height: 201px;
   border: 1px dashed #03feff;
@@ -4236,9 +4369,9 @@ export default {
   color: #fff;
   text-align: center;
   background: linear-gradient(#0d96b1 0%, #00b294 100%);
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -4357,9 +4490,9 @@ export default {
   border: 1px solid #03feff;
   margin: 34px 5px 38px 0;
   display: flex;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -4414,9 +4547,9 @@ export default {
   height: 30px;
   margin: 94px 0 99px 17px;
   position: relative;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -4443,9 +4576,9 @@ export default {
   border: 1px solid #32fdf6;
   border-radius: 50%;
   margin: 86px 0 89px 17px;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -4479,9 +4612,9 @@ export default {
   width: 47px;
   height: 23px;
   margin: 98px 0 102px 26px;
-}
+} */
 /* 线的样式 */
-.container
+/* .container
   #main
   .footer
   .footer-item2
@@ -4530,7 +4663,7 @@ export default {
   left: 58px;
   font-size: 16px;
   color: #fff;
-}
+} */
 
 /* 单独的品质特性填报入口 */
 .container #main .qualityArea {
@@ -5850,7 +5983,11 @@ export default {
   margin-left: 28px;
 }
 /* 修改购均价区域elementUI样式 */
-.container #main .averageArea .el-form .average-area
+.container
+  #main
+  .averageArea
+  .el-form
+  .average-area
   .el-form-item
   .el-form-item__content
   .el-input {
@@ -5858,13 +5995,21 @@ export default {
   margin-right: 550px;
   text-align: center;
 }
-.container #main .averageArea .el-form .average-area
+.container
+  #main
+  .averageArea
+  .el-form
+  .average-area
   .el-form-item
   .el-form-item__content
   > span {
   color: #fff;
 }
-.container #main .averageArea .el-form .average-area
+.container
+  #main
+  .averageArea
+  .el-form
+  .average-area
   .el-form-item
   .el-form-item__content
   .el-input
@@ -5873,20 +6018,21 @@ export default {
   background: rgba(3, 20, 46, 0.3);
   color: #fff;
 }
-.container #main .averageArea .el-form .average-area
-  .el-form-item {
+.container #main .averageArea .el-form .average-area .el-form-item {
   margin-top: 14px;
   margin-left: 4px;
 }
-.container #main .averageArea .el-form .average-area
+.container
+  #main
+  .averageArea
+  .el-form
+  .average-area
   .el-form-item
   .el-form-item__label {
   text-align: left;
   color: #fff;
   font-size: 12px;
 }
-
-
 
 /* 单独的采购比重填报入口底部样式 */
 .container #main .averageArea .el-form .entrance-bottom {
