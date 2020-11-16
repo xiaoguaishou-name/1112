@@ -106,119 +106,50 @@
                   <a @click="showEntrance">填报入口</a>
                 </div>
               </div>
-              <div class="score">
+              <!-- 得分图形展示区域 -->
+              <!-- <div class="score">
                 <div class="fill"></div>
+              </div> -->
+              <div class="progress">
+                <el-progress
+                  :stroke-width="22"
+                  :percentage="80"
+                  color="#fcb018"
+                  :show-text="false"
+                ></el-progress>
               </div>
-              <!-- <el-progress
-                :percentage="86"
-                :show-text="false"
-                color="#fcb018"
-                style="height: 22px"
-              ></el-progress> -->
               <!-- 表格区域 -->
-              <table>
-                <tr>
-                  <th>排名</th>
-                  <th>客户</th>
-                  <th>得分</th>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>张三</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3847</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>李四</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3823</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>王五</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3811</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>谢晓</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3847</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>胡俊波</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3847</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>欧阳三</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3847</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>7</td>
-                  <td>夏天</td>
-                  <td>
-                    <div class="process">
-                      <div class="process-score">
-                        <div class="score-number"></div>
-                      </div>
-                      <span>3847</span>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-              <!-- <el-table
-                :data="tableData1"
-                style="width: 100%"
-                row-key="id"
-                border
-              >
-                <el-table-column prop="date" label="日期" width="180">
-                </el-table-column>
-                <el-table-column prop="name" label="姓名" width="180">
-                </el-table-column>
-                <el-table-column prop="address" label="地址"> </el-table-column>
-              </el-table> -->
+              <div class="biao">
+                <el-table
+                  :data="tableData1"
+                  border
+                  style="width:100%;"
+                  :highlight-current-row="true"
+                  height="353px"
+                >
+                  <el-table-column label="排名" width="80">
+                    <template slot-scope="scope">
+                      <span>{{ scope.row.date }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="客户" width="180">
+                    <template slot-scope="scope">
+                      {{ scope.row.name }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="得分">
+                    <template slot-scope="scope">
+                      <el-progress
+                        :stroke-width="14"
+                        :percentage="80"
+                        color="#fcb018"
+                        :show-text="false"
+                      ></el-progress>
+                      <span>{{ scope.row.address }}</span>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
               <!-- 分页 -->
               <el-pagination
                 background
@@ -622,7 +553,13 @@
               <div class="credit">采购均价</div>
               <div class="coverage2" @click="showAverageArea">
                 <div class="coverage2-left">
-                  <el-table :data="tableData" border size="mini" height="160px" width="476px">
+                  <el-table
+                    :data="tableData"
+                    border
+                    size="mini"
+                    height="160px"
+                    width="476px"
+                  >
                     <el-table-column prop="title"> </el-table-column>
                     <el-table-column prop="num1" label="大料" width="60">
                     </el-table-column>
@@ -637,55 +574,10 @@
                   </el-table>
                 </div>
                 <div class="coverage2-right">
-                  <img src="./image/19.png" alt="">
+                  <img src="./image/19.png" alt="" />
                   <span>3865</span>
                   <i>采购均价得分</i>
                 </div>
-                <!-- <div class="coverage2-left">
-                  <ul class="secondary">
-                    <li class="jack">
-                      <span>中料</span>
-                    </li>
-                    <li class="mary">
-                      <i>4532</i>
-                    </li>
-                    <li class="jack">
-                      <span>轻质化煤焦油1</span>
-                    </li>
-                    <li class="mary">
-                      <i>4953</i>
-                    </li>
-                    <li class="jack">
-                      <span>轻质化煤焦油2</span>
-                    </li>
-                    <li class="mary">
-                      <i>3802</i>
-                    </li>
-                  </ul>
-                  <div class="reduce">
-                    <img src="./image/27.png" alt="" />
-                  </div>
-                  <div class="price">
-                    <div class="price-left">季度销售均价</div>
-                    <div class="price-right">0</div>
-                  </div>
-                </div>
-                <div class="coverage2-right">
-                  <div class="bery">
-                    <img src="./image/29.png" alt="" />
-                  </div>
-                  <div class="cery">
-                    <span>5</span>
-                  </div>
-                  <div class="dery">
-                    <img src="./image/23.png" alt="" />
-                  </div>
-                  <div class="eery">
-                    <img src="./image/19.png" alt="" />
-                    <span>3865</span>
-                    <i>采购均价</i>
-                  </div>
-                </div> -->
               </div>
             </div>
             <div class="footer-item">
@@ -1164,78 +1056,89 @@ export default {
       isShowAverageArea: false,
       form: {
         // 必须传给后台数据
-        cCusName: "",//客户名称
-        sysDate: "",//系统日期
-        proSca: "",//产能规模
-        status: "",//行业地位
-        relDeg: "",//业务关系强度
-        cashRat: "",//现金比例
-        cooperDeg1: "",//配合度1
-        cooperDeg2: "",//配合度2
-        driveEff: "",//带动作用
-        category: "",//客户性质
-        region: "",//客户区域
-        purPro: "",//采购比重
+        cCusName: "", //客户名称
+        sysDate: "", //系统日期
+        proSca: "", //产能规模
+        status: "", //行业地位
+        relDeg: "", //业务关系强度
+        cashRat: "", //现金比例
+        cooperDeg1: "", //配合度1
+        cooperDeg2: "", //配合度2
+        driveEff: "", //带动作用
+        category: "", //客户性质
+        region: "", //客户区域
+        purPro: "", //采购比重
         // 非必须
-        cCusName2: "",//搜索框搜索名
-        duration: "",//业务关系持续期
-        power: "",//吸货能力
-        shop: "",//均衡购货能力
-        purchase: "",//多元化采购
-        averagePrice: "",//采购均价
+        cCusName2: "", //搜索框搜索名
+        duration: "", //业务关系持续期
+        power: "", //吸货能力
+        shop: "", //均衡购货能力
+        purchase: "", //多元化采购
+        averagePrice: "", //采购均价
       },
-      // tableData1: [
-      //   {
-      //     id: 1,
-      //     date: "2016-05-02",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1518 弄",
-      //   },
-      //   {
-      //     id: 2,
-      //     date: "2016-05-04",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1517 弄",
-      //   },
-      //   {
-      //     id: 3,
-      //     date: "2016-05-01",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1519 弄",
-      //     hasChildren: true,
-      //   },
-      //   {
-      //     id: 4,
-      //     date: "2016-05-03",
-      //     name: "王小虎",
-      //     address: "上海市普陀区金沙江路 1516 弄",
-      //   },
-      // ],
       // 采购均价左侧区域假数据
       tableData: [
         {
-          title:"客户本季度采购均价",
-          num1:"1",
-          num2:"2",
-          num3:"3",
-          num4:"4",
-          num5:"5",  
+          title: "客户本季度采购均价",
+          num1: "1",
+          num2: "2",
+          num3: "3",
+          num4: "4",
+          num5: "5",
         },
         {
-          title:"本季度所有采购均价",
-          num1:"1",
-          num2:"2",
-          num3:"3",
-          num4:"4",
-          num5:"5",
+          title: "本季度所有采购均价",
+          num1: "1",
+          num2: "2",
+          num3: "3",
+          num4: "4",
+          num5: "5",
         },
         {
-          title:"差价",
-          num1:"1",
-          num2:"2",
-          num3:"3",
-          num4:"4",
-          num5:"5",
+          title: "差价",
+          num1: "1",
+          num2: "2",
+          num3: "3",
+          num4: "4",
+          num5: "5",
+        },
+      ],
+      // 表格区域假数据
+      tableData1: [
+        {
+          date: 1,
+          name: "张三",
+          address: "3847",
+        },
+        {
+          date: 2,
+          name: "李四",
+          address: "3823",
+        },
+        {
+          date: 3,
+          name: "王五",
+          address: "3711",
+        },
+        {
+          date: 4,
+          name: "谢晓",
+          address: "3711",
+        },
+        {
+          date: 5,
+          name: "胡俊波",
+          address: "3847",
+        },
+        {
+          date: 6,
+          name: "欧阳三",
+          address: "3847",
+        },
+        {
+          date: 7,
+          name: "夏天",
+          address: "3847",
         },
       ],
     };
@@ -1879,160 +1782,22 @@ export default {
   .el-progress-bar__inner {
   border-radius: 0;
 }
-.container #main .main-header .mainItem .rectangle .score {
-  box-sizing: border-box;
-  width: 832px;
-  height: 22px;
-  border: 1px solid #fcb018;
-  margin: 18px 17px 13px 21px;
+/* 得分展示图形区域 */
+.progress {
+  width: 840px;
+  margin: 0px 0 8px 0;
 }
-.container #main .main-header .mainItem .rectangle .score .fill {
-  width: 785px;
-  height: 20px;
-  background: #fcb018;
+.el-progress-bar__outer {
+  border-radius: 0;
 }
-/* 表格区域样式 */
-.container #main .main-header .mainItem .rectangle > table {
-  position: relative;
-  width: 832px;
-  margin: 0 17px 0 21px;
-}
-/* 伪类 */
-.container #main .main-header .mainItem .rectangle > table::before {
-  position: absolute;
-  left: 82px;
-  content: "";
-  width: 0;
-  height: 389px;
-  opacity: 0.34;
-  border: 0.5px solid #00aeef;
-}
-.container #main .main-header .mainItem .rectangle > table::after {
-  position: absolute;
-  top: 0;
-  left: 332px;
-  content: "";
-  width: 0;
-  height: 389px;
-  opacity: 0.34;
-  border: 0.5px solid #00aeef;
-}
-.container #main .main-header .mainItem .rectangle > table > tr:nth-of-type(1) {
-  height: 48px;
-  background: rgba(0, 174, 239, 0.34);
-}
-.container #main .main-header .mainItem .rectangle > table > tr > th {
-  font-size: 16px;
-  text-align: center;
-  color: #ffffff;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > th:nth-of-type(3) {
-  text-align: left;
-  padding-left: 30px;
-}
-.container #main .main-header .mainItem .rectangle > table > tr {
-  height: 48px;
-  border: 1px solid #00aeef;
+.el-progress-bar__inner {
+  border-radius: 0;
 }
 
-.container #main .main-header .mainItem .rectangle > table > tr > td {
-  height: 48px;
-  font-size: 14px;
-  color: #fff;
-  text-align: center;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(1) {
-  width: 10%;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(2) {
-  width: 30%;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(3) {
-  width: 60%;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(3)
-  .process {
-  position: relative;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(3)
-  .process
-  .process-score {
-  width: 370px;
-  margin-left: 30px;
-  border: 1px solid #051c2f;
-  background: #051c2f;
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(3)
-  .process
-  .process-score
-  .score-number {
-  width: 363px;
-  height: 14px;
-  background: rgba(103, 215, 253, 0.5);
-}
-.container
-  #main
-  .main-header
-  .mainItem
-  .rectangle
-  > table
-  > tr
-  > td:nth-of-type(3)
-  .process
-  > span {
-  position: absolute;
-  top: 0;
-  right: 52px;
-}
+/* 表格区域样式 */
+
+
+
 /* 重写elementUI分页样式 */
 .container #main .main-header .mainItem .rectangle .el-pagination {
   margin: 10px 0 0 133px;
@@ -4271,70 +4036,73 @@ export default {
   margin: 24px 0 17px 19px;
 }
 /* 修改采购均价左侧表格ele样式 */
-.el-table th{
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table th {
   background: linear-gradient(#0d96b1 0%, #00b294 100%);
-  color:#fff;
-  font-size:12px;
+  color: #fff;
+  font-size: 12px;
   text-align: center;
 }
-.el-table tr{
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table tr {
   background: #235464;
 }
-.el-table__row .cell{
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table__row .cell {
   text-align: center;
-  color:#fff;
-  font-size:12px;
+  color: #fff;
+  font-size: 12px;
 }
-.el-table__row .el-table_1_column_1{
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table__row .el-table_1_column_1 {
   text-align: left;
 }
-.el-table--enable-row-hover .el-table__body tr:hover>td {
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--enable-row-hover .el-table__body tr:hover > td {
   background: #235464;
 }
-.el-table--border td{
-  border-right:1px solid #0a5a83;
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border td {
+  border-right: 1px solid #0a5a83;
 }
-.el-table td{
-  border-bottom:1px solid #0a5a83;
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table td {
+  border-bottom: 1px solid #0a5a83;
 }
-.el-table--scrollable-x .el-table__body-wrapper{
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--scrollable-x .el-table__body-wrapper {
   overflow: hidden;
 }
-.el-table--border::after, .el-table--group::after, .el-table::before{
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border::after,
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--group::after,
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table::before {
   background-color: #235464;
 }
-.el-table--border th{
-  border-color:#235464;
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border th {
+  border-color: #235464;
 }
-.el-table th.is-leaf{
-  border:1px solid #235464;
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table th.is-leaf {
+  border: 1px solid #235464;
 }
-.el-table--border, .el-table--group{
-  border:1px solid #235464;
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border,
+.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--group {
+  border: 1px solid #235464;
 }
 /* 采购均价右侧样式 */
-.container #main .footer .footer-item2 .coverage2 .coverage2-right{
+.container #main .footer .footer-item2 .coverage2 .coverage2-right {
   position: relative;
   width: 179px;
   height: 179px;
   display: flex;
-  margin:25px 25px 25px 0;
+  margin: 25px 25px 25px 0;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-right > img{
+.container #main .footer .footer-item2 .coverage2 .coverage2-right > img {
   width: 100%;
   height: 100%;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-right > span{
+.container #main .footer .footer-item2 .coverage2 .coverage2-right > span {
   position: absolute;
-  top:54px;
-  left:60px;
+  top: 54px;
+  left: 60px;
   font-size: 24px;
   color: #32fdf6;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-right > i{
+.container #main .footer .footer-item2 .coverage2 .coverage2-right > i {
   position: absolute;
-  top:90px;
-  left:48px;
+  top: 90px;
+  left: 48px;
   font-size: 14px;
   color: #fff;
 }
