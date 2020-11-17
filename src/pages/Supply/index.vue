@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- 外部容器 -->
-    <div class="container">
+    <div class="container" :class="[this.isShowMask ? 'show' : 'hidden']">
+      <!-- <div class="mask" v-show="isShowMask"> -->
       <!-- 头部栏 -->
       <Header></Header>
       <!-- 主要内容区 -->
@@ -88,13 +89,13 @@
               <div class="info">
                 <div class="info-left">
                   <div class="fullName">
-                    <span>当前客户信息：王&nbsp;五</span>
+                    <span>当前客户信息：{{ this.customerName }}</span>
                   </div>
-                  <div class="firstNum">3</div>
+                  <div class="firstNum">{{ this.customerNum[0] }}</div>
                   <i>,</i>
-                  <div class="secondNum">7</div>
-                  <div class="thirdNum">1</div>
-                  <div class="fourthNum">1</div>
+                  <div class="secondNum">{{ this.customerNum[1] }}</div>
+                  <div class="thirdNum">{{ this.customerNum[2] }}</div>
+                  <div class="fourthNum">{{ this.customerNum[3] }}</div>
                 </div>
                 <div class="info-right">
                   <el-date-picker
@@ -113,50 +114,22 @@
               <div class="progress">
                 <el-progress
                   :stroke-width="22"
-                  :percentage="80"
+                  :percentage="score"
                   color="#fcb018"
                   :show-text="false"
                 ></el-progress>
               </div>
+              <!-- <Progress></Progress> -->
               <!-- 表格区域 -->
-              <div class="biao">
-                <el-table
-                  :data="tableData1"
-                  border
-                  style="width:100%;"
-                  :highlight-current-row="true"
-                  height="353px"
-                >
-                  <el-table-column label="排名" width="80">
-                    <template slot-scope="scope">
-                      <span>{{ scope.row.date }}</span>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="客户" width="180">
-                    <template slot-scope="scope">
-                      {{ scope.row.name }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="得分">
-                    <template slot-scope="scope">
-                      <el-progress
-                        :stroke-width="14"
-                        :percentage="80"
-                        color="#fcb018"
-                        :show-text="false"
-                      ></el-progress>
-                      <span>{{ scope.row.address }}</span>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </div>
+              <Table></Table>
               <!-- 分页 -->
-              <el-pagination
+              <!-- <el-pagination
                 background
                 layout="prev, pager, next, jumper"
                 :page-count="20"
               >
-              </el-pagination>
+              </el-pagination> -->
+              <Pagination></Pagination>
             </div>
           </div>
           <!-- 填报入口区域 -->
@@ -557,7 +530,7 @@
                     :data="tableData"
                     border
                     size="mini"
-                    height="160px"
+                    height="168px"
                     width="476px"
                   >
                     <el-table-column prop="title"> </el-table-column>
@@ -1033,17 +1006,22 @@
         </div>
       </div>
     </div>
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
 import Header from "../../components/Header";
+// import Progress from "../Progress/index";
+import Table from "../Table/index";
+import Pagination from "../Pagination/index";
 export default {
   name: "Supply",
   data() {
     return {
       date: "",
       // 控制显示与隐藏
+      isShowMask: false,
       isShow: false,
       isShowQualityArea: false,
       isShowPowerArea: false,
@@ -1054,6 +1032,9 @@ export default {
       isShowDriveArea: false,
       isShowProportionArea: false,
       isShowAverageArea: false,
+      // 定义初始客户的数据
+      customerName: "王五",
+      customerNum: "3711",
       form: {
         // 必须传给后台数据
         cCusName: "", //客户名称
@@ -1103,192 +1084,201 @@ export default {
           num5: "5",
         },
       ],
-      // 表格区域假数据
-      tableData1: [
-        {
-          date: 1,
-          name: "张三",
-          address: "3847",
-        },
-        {
-          date: 2,
-          name: "李四",
-          address: "3823",
-        },
-        {
-          date: 3,
-          name: "王五",
-          address: "3711",
-        },
-        {
-          date: 4,
-          name: "谢晓",
-          address: "3711",
-        },
-        {
-          date: 5,
-          name: "胡俊波",
-          address: "3847",
-        },
-        {
-          date: 6,
-          name: "欧阳三",
-          address: "3847",
-        },
-        {
-          date: 7,
-          name: "夏天",
-          address: "3847",
-        },
-      ],
     };
+  },
+  mounted() {
+    this.$bus.$on("addTodo", this.addTodo);
   },
   methods: {
     // 点击展开填报入口回调
     showEntrance() {
       this.isShow = true;
+      this.isShowMask = true;
     },
     // 点击x关闭填报(或取消关闭填报)
     closeEntrance() {
       this.isShow = false;
+      this.isShowMask = false;
     },
     // 点击提交填报回调
     onSubmit() {
       console.log(this.form);
       this.isShow = false;
+      this.isShowMask = false;
       this.$message.success("填报提交成功");
     },
     // 点击展示单独的品质特性填报入口
     showQualityArea() {
       this.isShowQualityArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭单独的品质特性填报入口
     closeQualityArea() {
       this.isShowQualityArea = false;
+      this.isShowMask = false;
     },
     // 点击提交更新品质特性回调
     updateQualityArea() {
       console.log(this.form);
       this.isShowQualityArea = false;
+      this.isShowMask = false;
       this.$message.success("更新品质特性成功");
     },
     // 点击展示单独的能力评估填报入口
     showPowerArea() {
       this.isShowPowerArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭能力评估填报入口
     closePowerArea() {
       this.isShowPowerArea = false;
+      this.isShowMask = false;
     },
     // 点击提交更新能力评估回调
     updatePowerArea() {
       console.log(this.form);
       this.isShowPowerArea = false;
+      this.isShowMask = false;
       this.$message.success("更新能力评估成功");
     },
     // 点击展示单独的均衡购货评价填报入口
     showShopArea() {
       this.isShowShopArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭均衡购货评价填报入口
     closeShopArea() {
       this.isShowShopArea = false;
+      this.isShowMask = false;
     },
     // 点击提交更新均衡购货评价回调
     updateShopArea() {
       console.log(this.form);
       this.isShowShopArea = false;
+      this.isShowMask = false;
       this.$message.success("更新均衡购货评价成功");
     },
     // 点击展示单独的信用评价填报入口
     showCreditArea() {
       this.isShowCreditArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭信用评价填报
     closeCreditArea() {
       this.isShowCreditArea = false;
+      this.isShowMask = false;
     },
     // 点击提交更新信用评价
     updateCreditArea() {
       console.log(this.form);
       this.isShowCreditArea = false;
+      this.isShowMask = false;
       this.$message.success("更新信用评价成功");
     },
     // 点击展示单独的客户类型填报入口
     showCustomerArea() {
       this.isShowCustomerArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭单独的客户填报
     closeCustomerArea() {
       this.isShowCustomerArea = false;
+      this.isShowMask = false;
     },
     // 点击提交后的更新客户类型回调
     updateCustomerArea() {
       console.log(this.form);
       this.isShowCustomerArea = false;
+      this.isShowMask = false;
       this.$message.success("客户类型更新成功");
     },
     // 点击展示多元化采购单独填报入口
     showPurchaseArea() {
       this.isShowPurchaseArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭多元化采购单独填报入口
     closePurchaseArea() {
       this.isShowPurchaseArea = false;
+      this.isShowMask = false;
     },
     // 点击提交后更新多元化采购
     updatePurchaseArea() {
       console.log(this.form);
       this.isShowPurchaseArea = false;
+      this.isShowMask = false;
       this.$message.success("多元化采购更新成功");
     },
     // 点击展示带动作用填报
     showDriveArea() {
       this.isShowDriveArea = true;
+      this.isShowMask = true;
     },
 
     // 点击x或取消关闭带动作用填报
     closeDriveArea() {
       this.isShowDriveArea = false;
+      this.isShowMask = false;
     },
 
     // 点击提交更新带动作用
     updateDriveArea() {
       console.log(this.form);
       this.isShowDriveArea = false;
+      this.isShowMask = false;
       this.$message.success("带动作用更新成功");
     },
     // 点击展示采购比重填报
     showProportionArea() {
       this.isShowProportionArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭采购比重填报
     closeProportionArea() {
       this.isShowProportionArea = false;
+      this.isShowMask = false;
     },
     // 点击提交更新采购比重
     updateProportionArea() {
       console.log(this.form);
       this.isShowProportionArea = false;
+      this.isShowMask = false;
       this.$message.success("采购比重更新成功");
     },
     // 点击展示单独的采购均价填报
     showAverageArea() {
       this.isShowAverageArea = true;
+      this.isShowMask = true;
     },
     // 点击x或取消关闭采购均价填报
     closeAverageArea() {
       this.isShowAverageArea = false;
+      this.isShowMask = false;
     },
     // 点击提交更新采购均价
     updateAverageArea() {
       console.log(this.form);
       this.isShowAverageArea = false;
+      this.isShowMask = false;
       this.$message.success("采购均价更新成功");
+    },
+    // 点击表格内容动态修改页面客户信息回调
+    addTodo(newVal) {
+      this.customerName = newVal.name;
+      this.customerNum = newVal.address;
+    },
+  },
+  // 计算属性
+  computed: {
+    score: function () {
+      return this.customerNum*100 / 4000;
     },
   },
   components: {
     Header,
+    // Progress,
+    Table,
+    Pagination,
   },
 };
 </script>
@@ -1299,7 +1289,13 @@ export default {
   height: 100%;
   width: 100%;
 }
-
+.container.show {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.5);
+}
 /* 主要内容区 */
 .container #main {
   box-sizing: border-box;
@@ -1654,13 +1650,14 @@ export default {
 .container #main .main-header .mainItem .rectangle .info .info-left .firstNum {
   position: absolute;
   top: -14px;
-  left: 178px;
+  /* left: 178px; */
+  left: 188px;
   width: 28px;
   height: 40px;
   line-height: 40px;
   color: #19f1f9;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   font-family: DIN Alternate Bold, DIN Alternate Bold-Bold;
   opacity: 0.67;
   border: 1px solid #5a9cff;
@@ -1669,18 +1666,20 @@ export default {
 .container #main .main-header .mainItem .rectangle .info .info-left > i {
   position: absolute;
   top: 9px;
-  left: 212px;
+  /* left: 212px; */
+  left: 222px;
 }
 .container #main .main-header .mainItem .rectangle .info .info-left .secondNum {
   position: absolute;
   top: -14px;
-  left: 218px;
+  /* left: 218px; */
+  left: 228px;
   width: 28px;
   height: 40px;
   line-height: 40px;
   color: #19f1f9;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   font-family: DIN Alternate Bold, DIN Alternate Bold-Bold;
   opacity: 0.67;
   border: 1px solid #5a9cff;
@@ -1689,13 +1688,14 @@ export default {
 .container #main .main-header .mainItem .rectangle .info .info-left .thirdNum {
   position: absolute;
   top: -14px;
-  left: 252px;
+  /* left: 252px; */
+  left: 262px;
   width: 28px;
   height: 40px;
   line-height: 40px;
   color: #19f1f9;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   font-family: DIN Alternate Bold, DIN Alternate Bold-Bold;
   opacity: 0.67;
   border: 1px solid #5a9cff;
@@ -1704,13 +1704,14 @@ export default {
 .container #main .main-header .mainItem .rectangle .info .info-left .fourthNum {
   position: absolute;
   top: -14px;
-  left: 286px;
+  /* left: 286px; */
+  left: 296px;
   width: 28px;
   height: 40px;
   line-height: 40px;
   color: #19f1f9;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   opacity: 0.67;
   border: 1px solid #5a9cff;
   text-align: center;
@@ -1750,7 +1751,7 @@ export default {
   font-size: 16px;
   color: #18e3ed;
 }
-.container
+/* .container
   #main
   .main-header
   .mainItem
@@ -1781,9 +1782,9 @@ export default {
   .el-progress-bar__outer
   .el-progress-bar__inner {
   border-radius: 0;
-}
+} */
 /* 得分展示图形区域 */
-.progress {
+/* .progress {
   width: 840px;
   margin: 0px 0 8px 0;
 }
@@ -1792,11 +1793,25 @@ export default {
 }
 .el-progress-bar__inner {
   border-radius: 0;
+} */
+.progress {
+  width: 830px;
+  margin: 20px 0 10px 22px;
+}
+.progress .el-progress .el-progress-bar .el-progress-bar__outer {
+  border-radius: 0;
+  background-color: #051c2f;
+  border: 1px solid #fcb018;
+}
+.progress
+  .el-progress
+  .el-progress-bar
+  .el-progress-bar__outer
+  .el-progress-bar__inner {
+  border-radius: 0;
 }
 
 /* 表格区域样式 */
-
-
 
 /* 重写elementUI分页样式 */
 .container #main .main-header .mainItem .rectangle .el-pagination {
@@ -1849,8 +1864,10 @@ export default {
 .container #main .main-header .entrance {
   box-sizing: border-box;
   position: absolute;
-  top: 30px;
-  left: 1090px;
+  /* top: 30px; */
+  top: 34px;
+  /* left: 1090px; */
+  left: 570px;
   z-index: 4;
   width: 760px;
   height: 892px;
@@ -4043,42 +4060,123 @@ export default {
   text-align: center;
 }
 .container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table tr {
-  background: #235464;
+  background: #051c2f;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table__row .cell {
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table__row
+  .cell {
   text-align: center;
   color: #fff;
   font-size: 12px;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table__row .el-table_1_column_1 {
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table__row
+  .el-table_1_column_1 {
   text-align: left;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--enable-row-hover .el-table__body tr:hover > td {
-  background: #235464;
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--enable-row-hover
+  .el-table__body
+  tr:hover
+  > td {
+  background: #051c2f;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border td {
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--border
+  td {
   border-right: 1px solid #0a5a83;
 }
 .container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table td {
   border-bottom: 1px solid #0a5a83;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--scrollable-x .el-table__body-wrapper {
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--scrollable-x
+  .el-table__body-wrapper {
   overflow: hidden;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border::after,
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--group::after,
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table::before {
-  background-color: #235464;
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--border::after,
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--group::after,
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table::before {
+  background-color: #051c2f;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border th {
-  border-color: #235464;
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--border
+  th {
+  border-color: #051c2f;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table th.is-leaf {
-  border: 1px solid #235464;
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table
+  th.is-leaf {
+  border: 1px solid #051c2f;
 }
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--border,
-.container #main .footer .footer-item2 .coverage2 .coverage2-left .el-table--group {
-  border: 1px solid #235464;
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--border,
+.container
+  #main
+  .footer
+  .footer-item2
+  .coverage2
+  .coverage2-left
+  .el-table--group {
+  border: 1px solid #051c2f;
 }
 /* 采购均价右侧样式 */
 .container #main .footer .footer-item2 .coverage2 .coverage2-right {
@@ -4438,7 +4536,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 374px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -4582,7 +4681,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 474px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -5016,7 +5116,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 274px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -5139,7 +5240,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 374px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -5368,7 +5470,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 244px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -5481,7 +5584,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 244px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -5603,7 +5707,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 244px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
@@ -5715,7 +5820,8 @@ export default {
   position: absolute;
   width: 760px;
   height: 244px;
-  left: 500px;
+  /* left: 500px; */
+  left: 510px;
   top: 30px;
   z-index: 5;
   background: rgba(9, 38, 78, 0.9);
