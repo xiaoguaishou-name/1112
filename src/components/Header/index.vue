@@ -52,7 +52,8 @@
             </li>
             <!-- <li class="line">|</li> -->
             <li class="nav-right-item">
-              <a class="large">22：30：05</a>
+              <!-- <a class="large">{{time}}</a> -->
+              <a class="large">{{dateFormat(newDate)}}</a>
             </li>
             <!-- <li class="line">|</li> -->
             <li class="nav-right-item">
@@ -67,7 +68,45 @@
 
 <script>
   export default {
-    name:'Header'
+    name:'Header',
+    data(){
+      return{
+        newDate:new Date()
+      }
+    },
+    // 动态显示时间
+    mounted(){
+      let that = this
+      this.timer = setInterval(function(){
+        that.newDate = new Date().toLocaleString()
+      })
+    },
+    // 销毁定时器
+    beforeDestroy(){
+      if(this.timer){
+        clearInterval(this.timer)
+      }
+    },
+    methods:{
+      // 格式化时间
+      dateFormat(){
+        var date = new Date()
+        var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+        var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+        var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+        return hours + ':' + minutes + ":" + seconds
+      }
+    }
+    // computed:{
+    //   time:function(){
+    //     let date = new Date()
+    //     let hour = date.getHours()
+    //     let minute = date.getMinutes()
+    //     let second = date.getSeconds()
+    //     return (hour >= 10 ? hour :"0" + hour)+":"+(minute >= 10 ? minute : "0" + minute)+":"+(second >= 10 ? second : "0" + second)
+    //   }
+    // },
+    
   }
 </script>
 

@@ -4,7 +4,7 @@
     <div class="container" :class="[this.isShowMask ? 'show' : 'hidden']">
       <!-- <div class="mask" v-show="isShowMask"> -->
       <!-- 头部栏 -->
-      <Header></Header>
+      <!-- <Header></Header> -->
       <!-- 主要内容区 -->
       <div id="main">
         <div class="main-header clearfix">
@@ -17,35 +17,35 @@
                   <li>
                     <img src="./image/12.png" alt="" />
                     <span>产品规模</span>
-                    <i>2</i>
+                    <i>{{ this.form.proSca }}</i>
                     <img src="./image/20.png" alt="" />
                     <img src="./image/22.png" alt="" />
                   </li>
                   <li>
                     <img src="./image/12.png" alt="" />
                     <span>行业地位</span>
-                    <i>0</i>
+                    <i>{{ this.form.status }}</i>
                     <img src="./image/20.png" alt="" />
                     <img src="./image/22.png" alt="" />
                   </li>
                   <li>
                     <img src="./image/12.png" alt="" />
                     <span>业务关系持续期</span>
-                    <i>5</i>
+                    <i>{{ this.form.duration }}</i>
                     <img src="./image/20.png" alt="" />
                     <img src="./image/22.png" alt="" />
                   </li>
                   <li>
                     <img src="./image/12.png" alt="" />
                     <span>业务关系强度</span>
-                    <i>3</i>
+                    <i>{{ this.form.relDeg }}</i>
                     <img src="./image/20.png" alt="" />
                     <img src="./image/22.png" alt="" />
                   </li>
                 </ul>
                 <div class="quality">
                   <img src="./image/21.png" alt="" />
-                  <i>12</i>
+                  <i>{{ pinzhi }}</i>
                   <span>品质特效</span>
                   <img src="./image/22.png" alt="" />
                 </div>
@@ -58,7 +58,7 @@
                   <img src="./image/28.png" alt="" />
                   <div class="desp">
                     <div>
-                      <span>40</span>
+                      <span>{{ this.form.power }}</span>
                     </div>
                     <div>
                       <i>吸货能力</i>
@@ -72,7 +72,7 @@
                   <img src="./image/28.png" alt="" />
                   <div class="desp">
                     <div>
-                      <span>20</span>
+                      <span>{{ this.form.shop }}</span>
                     </div>
                     <div>
                       <i>均衡购货能力</i>
@@ -91,26 +91,24 @@
                   <div class="fullName">
                     <span>当前客户信息：{{ this.customerName }}</span>
                   </div>
-                  <div class="firstNum">{{ this.customerNum[0] }}</div>
+                  <!-- <div class="firstNum">{{ this.customerNum[0] }}</div>
                   <i>,</i>
                   <div class="secondNum">{{ this.customerNum[1] }}</div>
                   <div class="thirdNum">{{ this.customerNum[2] }}</div>
-                  <div class="fourthNum">{{ this.customerNum[3] }}</div>
+                  <div class="fourthNum">{{ this.customerNum[3] }}</div> -->
                 </div>
                 <div class="info-right">
                   <el-date-picker
                     v-model="date"
                     type="date"
                     placeholder="选择日期"
+                    @change="setDate"
                   >
                   </el-date-picker>
                   <a @click="showEntrance">填报入口</a>
                 </div>
               </div>
               <!-- 得分图形展示区域 -->
-              <!-- <div class="score">
-                <div class="fill"></div>
-              </div> -->
               <div class="progress">
                 <el-progress
                   :stroke-width="22"
@@ -119,17 +117,17 @@
                   :show-text="false"
                 ></el-progress>
               </div>
-              <!-- <Progress></Progress> -->
               <!-- 表格区域 -->
-              <Table></Table>
+              <Table :scoreRankList="scoreRankList"></Table>
               <!-- 分页 -->
-              <!-- <el-pagination
+              <!-- <Pagination></Pagination> -->
+              <el-pagination
                 background
                 layout="prev, pager, next, jumper"
                 :page-count="20"
+                @current-change="handleCurrentChange"
               >
-              </el-pagination> -->
-              <Pagination></Pagination>
+              </el-pagination>
             </div>
           </div>
           <!-- 填报入口区域 -->
@@ -149,6 +147,8 @@
                     <el-select
                       v-model="form.cCusName"
                       placeholder="请选择客户名称"
+                      @click.native="getAllCustomer"
+                      @change="getOwnCustomer"
                     >
                       <el-input
                         placeholder="请输入客户名称查询"
@@ -156,11 +156,17 @@
                         v-model="form.cCusName2"
                       >
                       </el-input>
-                      <el-option label="张三" value="shanghai"></el-option>
+                      <el-option
+                        v-for="item in customerinfos"
+                        :key="item.cCusCode"
+                        :label="item.cCusName"
+                        :value="item.cCusCode"
+                      ></el-option>
+                      <!-- <el-option label="张三" value="shanghai"></el-option>
                       <el-option label="王五" value="beijing"></el-option>
                       <el-option label="李四" value="shenzhen"></el-option>
                       <el-option label="谢晓" value="guangzhou"></el-option>
-                      <el-option label="胡俊波" value="nanchang"></el-option>
+                      <el-option label="胡俊波" value="nanchang"></el-option> -->
                     </el-select>
                   </el-form-item>
                   <el-form-item label="填报日期">
@@ -248,11 +254,11 @@
                   </div>
                   <el-form-item label="吸货能力">
                     <el-radio-group v-model="form.power" text-color="#00b294">
-                      <el-radio label="40" border>40</el-radio>
-                      <el-radio label="30" border>30</el-radio>
-                      <el-radio label="20" border>20</el-radio>
-                      <el-radio label="10" border>10</el-radio>
-                      <el-radio label="5" border>5</el-radio>
+                      <el-radio :label="40" border>40</el-radio>
+                      <el-radio :label="30" border>30</el-radio>
+                      <el-radio :label="20" border>20</el-radio>
+                      <el-radio :label="10" border>10</el-radio>
+                      <el-radio :label="5" border>5</el-radio>
                       <div class="forty">
                         <div class="forty-item">时间周期（季度）</div>
                         <div class="forty-item">碳品吸货能力>=8000吨；</div>
@@ -464,7 +470,7 @@
                 <div class="smallLogo">
                   <img src="./image/12.png" alt="" />
                   <span>多元化采购能力</span>
-                  <i>3</i>
+                  <i>{{ this.form.purchase }}</i>
                 </div>
                 <ul class="graphical">
                   <li>
@@ -486,14 +492,14 @@
                   <div class="drive-header">带动作用</div>
                   <div class="drive-main" @click="showDriveArea">
                     <img src="./image/17.png" alt="" />
-                    <span>5</span>
+                    <span>{{ this.form.driveEff }}</span>
                   </div>
                 </div>
                 <div class="drive">
                   <div class="drive-header">采购比重</div>
                   <div class="drive-main" @click="showProportionArea">
                     <img src="./image/16.png" alt="" />
-                    <span>5</span>
+                    <span>{{ this.form.purPro }}</span>
                   </div>
                 </div>
               </div>
@@ -506,7 +512,7 @@
               <div class="coverage" @click="showCreditArea">
                 <div class="chart">
                   <img src="./image/18.png" alt="" />
-                  <i class="numa">15</i>
+                  <i class="numa">{{ this.form.cashRat }}</i>
                   <div class="money">
                     <img src="./image/15.png" alt="" />
                     <span>现金比例</span>
@@ -514,7 +520,7 @@
                 </div>
                 <div class="chart">
                   <img src="./image/18.png" alt="" />
-                  <i class="numb">6</i>
+                  <i class="numb">{{ peihe }}</i>
                   <div class="group">
                     <img src="./image/13.png" alt="" />
                     <span>配合度</span>
@@ -548,7 +554,7 @@
                 </div>
                 <div class="coverage2-right">
                   <img src="./image/19.png" alt="" />
-                  <span>3865</span>
+                  <span>{{ this.form.averagePrice }}</span>
                   <i>采购均价得分</i>
                 </div>
               </div>
@@ -558,7 +564,7 @@
               <div class="coverage" @click="showCustomerArea">
                 <div class="chart">
                   <img src="./image/18.png" alt="" />
-                  <i class="numb">5</i>
+                  <i class="numb">{{ this.form.category }}</i>
                   <div class="money">
                     <img src="./image/15.png" alt="" />
                     <span>性质</span>
@@ -566,7 +572,7 @@
                 </div>
                 <div class="chart">
                   <img src="./image/18.png" alt="" />
-                  <i class="numb">2</i>
+                  <i class="numb">{{ this.form.region }}</i>
                   <div class="group">
                     <img src="./image/14.png" alt="" />
                     <span>区域</span>
@@ -1014,12 +1020,26 @@
 import Header from "../../components/Header";
 // import Progress from "../Progress/index";
 import Table from "../Table/index";
-import Pagination from "../Pagination/index";
+// import Pagination from "../Pagination/index";
+import { reqScoreRanking } from "../../api/index";
+import { reqCustomerInfos } from "../../api/index";
+import { reqShortCustomerInfo } from "../../api/index";
+import { updateCustomerInfos } from "../../api/index";
+import { updateQualityInfos } from "../../api/index";
 export default {
   name: "Supply",
   data() {
     return {
-      date: "",
+      // 填报左侧日期
+      date: JSON.stringify(new Date()).substring(1, 11),
+      // 表格列表数据
+      scoreRankList: [],
+      // 下拉框所有客户数据
+      customerinfos: [],
+      // 客户编码
+      cCusCode: "",
+      //
+      // ownCustomer:'',
       // 控制显示与隐藏
       isShowMask: false,
       isShow: false,
@@ -1033,23 +1053,21 @@ export default {
       isShowProportionArea: false,
       isShowAverageArea: false,
       // 定义初始客户的数据
-      customerName: "王五",
-      customerNum: "3711",
+      customerName: "",
+      customerNum: "",
       form: {
-        // 必须传给后台数据
         cCusName: "", //客户名称
-        sysDate: "", //系统日期
-        proSca: "", //产能规模
-        status: "", //行业地位
-        relDeg: "", //业务关系强度
+        sysDate: "", //填报日期
+        proSca: 0, //产能规模
+        status: 0, //行业地位
+        relDeg: 1, //业务关系强度
         cashRat: "", //现金比例
-        cooperDeg1: "", //配合度1
-        cooperDeg2: "", //配合度2
+        cooperDeg1: 0, //配合度1
+        cooperDeg2: 0, //配合度2
         driveEff: "", //带动作用
         category: "", //客户性质
         region: "", //客户区域
         purPro: "", //采购比重
-        // 非必须
         cCusName2: "", //搜索框搜索名
         duration: "", //业务关系持续期
         power: "", //吸货能力
@@ -1061,35 +1079,144 @@ export default {
       tableData: [
         {
           title: "客户本季度采购均价",
-          num1: "1",
-          num2: "2",
-          num3: "3",
-          num4: "4",
-          num5: "5",
+          num1: "0",
+          num2: "0",
+          num3: "0",
+          num4: "0",
+          num5: "0",
         },
         {
           title: "本季度所有采购均价",
-          num1: "1",
-          num2: "2",
-          num3: "3",
-          num4: "4",
-          num5: "5",
+          num1: "0",
+          num2: "0",
+          num3: "0",
+          num4: "0",
+          num5: "0",
         },
         {
           title: "差价",
-          num1: "1",
-          num2: "2",
-          num3: "3",
-          num4: "4",
-          num5: "5",
+          num1: "0",
+          num2: "0",
+          num3: "0",
+          num4: "0",
+          num5: "0",
         },
       ],
     };
   },
   mounted() {
     this.$bus.$on("addTodo", this.addTodo);
+    // 页面加载完请求表格数据
+    this.getScoreRanking();
   },
   methods: {
+    // 点击改变分页重新获取数据
+    async handleCurrentChange(val) {
+      console.log(val)
+      const res2 = await reqScoreRanking(this.date,val,7)
+      this.scoreRankList = res2.data.items
+    },
+    // 根据日期和客户编码获取指定的客户信息
+    async getOwnCustomer(val) {
+      // console.log(val)
+      this.cCusCode = val;
+      // console.log(this.cCusCode)
+      const result3 = await reqShortCustomerInfo(this.date, this.cCusCode);
+      // console.log(result3)
+      this.customerName = result3.data.cCusName;
+      // console.log(this.ownCustomer)
+      this.form.duration = result3.data.relDurScore;
+      this.form.power = result3.data.absorbScore;
+      this.form.shop = result3.data.banPurScore;
+      this.form.purchase = result3.data.divPurScore;
+      this.form.averagePrice = result3.data.purScore;
+      console.log(
+        this.duration,
+        this.power,
+        this.shop,
+        this.purchase,
+        this.averagePrice
+      );
+      console.log(this.form);
+    },
+    // 点击下拉框后请求所有客户信息
+    async getAllCustomer() {
+      const result2 = await reqCustomerInfos(this.date);
+      // console.log(result2)
+      this.customerinfos = result2.data;
+      // console.log(this.customerinfos)
+      // this.cCusCode = result2.data.cCusCode
+      // console.log(this.cCusCode)
+    },
+    // 请求所有客户排名信息列表
+    async getScoreRanking() {
+      // console.log(this.date)
+      const result = await reqScoreRanking(this.date, 1, 7);
+      // console.log(result)
+      this.scoreRankList = result.data.items;
+      // console.log(this.scoreRankList)
+      this.cCusCode = result.data.items.cCusCode
+      this.customerName = result.data.items.cCusName
+      this.form.cashRat = result.data.items.cashRat
+      this.form.category = result.data.items.category
+      // this.peihe = result.data.items.cooperDeg
+      this.form.driveEff = result.data.items.driveEff
+      this.form.proSca = result.data.items.proSca
+      this.form.relDeg = result.data.items.relDeg
+      this.form.purPro = result.data.items.purPro
+      this.form.duration = result.data.items.relDurScore;
+      this.form.power = result.data.items.absorbScore;
+      this.form.shop = result.data.items.banPurScore;
+      this.form.purchase = result.data.items.divPurScore;
+      this.form.averagePrice = result.data.items.purScore;
+    },
+    // 设置日期的回调
+    setDate(val) {
+      // let str;
+      // console.log(val);
+      // console.log(this.date)
+      // 因为使用JSON.stringify转换时间会比实际少一天，因此重写方法来获取正确的时间
+      Date.prototype.format = function (fmt) {
+        var o = {
+          "M+": this.getMonth() + 1, //月份
+          "d+": this.getDate(), //日
+          "h+": this.getHours(), //小时
+          "m+": this.getMinutes(), //分
+          "s+": this.getSeconds(), //秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+          S: this.getMilliseconds(), //毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+          fmt = fmt.replace(
+            RegExp.$1,
+            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
+          );
+        }
+        for (var k in o) {
+          if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(
+              RegExp.$1,
+              RegExp.$1.length == 1
+                ? o[k]
+                : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+          }
+        }
+        return fmt;
+      };
+      /*
+       * 重写时间的toJSON方法，因为在调用JSON.stringify的时候，时间转换就调用的toJSON，这样会导致少8个小时，所以重写它的toJSON方法
+       */
+      Date.prototype.toJSON = function () {
+        return this.format("yyyy-MM-dd hh:mm:ss"); // util.formatDate是自定义的个时间格式化函数
+      };
+      // console.log(JSON.stringify(val));
+      this.date = JSON.stringify(val).substring(1, 11);
+      // console.log(this.date);
+      // 客户选择改变日期后需要重新请求数据
+      this.getScoreRanking();
+    },
+
     // 点击展开填报入口回调
     showEntrance() {
       this.isShow = true;
@@ -1101,10 +1228,29 @@ export default {
       this.isShowMask = false;
     },
     // 点击提交填报回调
-    onSubmit() {
+    async onSubmit() {
       console.log(this.form);
       this.isShow = false;
       this.isShowMask = false;
+      const result4 = await updateCustomerInfos(
+        this.date,
+        this.cCusCode,
+        this.form.proSca,
+        this.form.status,
+        this.form.relDeg,
+        this.form.cashRat,
+        this.form.cooperDeg1,
+        this.form.cooperDeg2,
+        this.form.driveEff,
+        this.form.category,
+        this.form.region,
+        this.form.purPro,
+        this.duration,
+        this.form.power,
+        this.form.shop,
+        this.form.purchase,
+        this.form.averagePrice
+      );
       this.$message.success("填报提交成功");
     },
     // 点击展示单独的品质特性填报入口
@@ -1118,10 +1264,17 @@ export default {
       this.isShowMask = false;
     },
     // 点击提交更新品质特性回调
-    updateQualityArea() {
+    async updateQualityArea() {
       console.log(this.form);
       this.isShowQualityArea = false;
       this.isShowMask = false;
+      const res = await updateQualityInfos(
+        this.date,
+        this.cCusCode,
+        this.form.proSca,
+        this.form.relDeg
+      );
+      console.log(res);
       this.$message.success("更新品质特性成功");
     },
     // 点击展示单独的能力评估填报入口
@@ -1264,21 +1417,37 @@ export default {
     },
     // 点击表格内容动态修改页面客户信息回调
     addTodo(newVal) {
-      this.customerName = newVal.name;
-      this.customerNum = newVal.address;
+      this.customerName = newVal.cCusName;
+      console.log(this.customerName);
+      this.customerNum = newVal.score;
+      console.log(this.customerNum);
     },
   },
   // 计算属性
   computed: {
+    // 计算进度条
     score: function () {
-      return this.customerNum*100 / 4000;
+      return (this.customerNum * 100) / 40;
+    },
+    // 计算品质特效
+    pinzhi: function () {
+      return (
+        this.form.proSca * 1 +
+        this.form.status * 1 +
+        this.form.duration * 1 +
+        this.form.relDeg * 1
+      );
+    },
+    // 计算配合度
+    peihe: function () {
+      return this.form.cooperDeg1 * 1 + this.form.cooperDeg2 * 1;
     },
   },
   components: {
     Header,
     // Progress,
     Table,
-    Pagination,
+    // Pagination,
   },
 };
 </script>
@@ -1501,7 +1670,7 @@ export default {
 .container #main .main-header .left .left-item1 .pie .quality i {
   position: absolute;
   top: 44px;
-  left: 54px;
+  left: 56px;
   font-size: 26px;
   font-family: DIN Alternate Bold, DIN Alternate Bold-Bold;
   text-align: left;
@@ -1977,9 +2146,9 @@ export default {
 }
 .el-select-dropdown {
   z-index: 5;
-  border: 1px solid #0797a7;
+  border: 1px solid #0797a7 !important;
   border-radius: 0;
-  background: #072042;
+  background: #072042 !important;
   margin: 0;
   overflow: auto;
 }
@@ -2005,7 +2174,7 @@ export default {
 /* hover选择内容效果样式更改设置 */
 .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
-  background: #113565;
+  background: #113565 !important;
 }
 /* 下拉框伪类小三角不要 */
 .el-popper .popper__arrow,
@@ -4193,7 +4362,7 @@ export default {
 .container #main .footer .footer-item2 .coverage2 .coverage2-right > span {
   position: absolute;
   top: 54px;
-  left: 60px;
+  left: 74px;
   font-size: 24px;
   color: #32fdf6;
 }

@@ -11,4 +11,16 @@ module.exports = {
       })
     ]
   },
+  // 代理
+  devServer:{
+    proxy:{
+      "/api":{
+        target:"http://192.168.1.235:8686",
+        pathRewrite:{
+          "^/api":""
+        },
+        changeOringin:true
+      } 
+    }
+  }
 }

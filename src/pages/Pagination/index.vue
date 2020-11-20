@@ -4,6 +4,7 @@
       background
       layout="prev, pager, next, jumper"
       :page-count="20"
+      @current-change="handleCurrentChange"
     >
     </el-pagination>
   </div>

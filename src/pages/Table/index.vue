@@ -1,10 +1,10 @@
 <template>
   <div class="biao">
     <el-table
-      :data="tableData1"
+      :data="scoreRankList"
       border
       :highlight-current-row="true"
-      :cell-style="{ padding: '10px 0px' }"
+      :cell-style="{ padding: '4px 0px' }"
       :row-style="{ height: '10px' }"
       :header-cell-style="{
         background: 'rgba(0,174,239,0.34)',
@@ -15,21 +15,21 @@
     >
       <el-table-column label="排名" width="80" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.date }}</span>
+          <span>{{ scope.row.rn }}</span>
         </template>
       </el-table-column>
       <el-table-column label="客户" width="180" align="center">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.cCusName }}
         </template>
       </el-table-column>
       <el-table-column label="得分" align="center">
         <template slot-scope="scope">
-          <div class="num">{{ scope.row.address }}</div>
+          <div class="num">{{ scope.row.score }}</div>
           <div class="jind">
             <el-progress
               :stroke-width="14"
-              :percentage="scope.row.address*100/4000"
+              :percentage="scope.row.score*100/40"
               color="#67d7fd"
               :show-text="false"
             ></el-progress>
@@ -41,8 +41,10 @@
 </template>
 
 <script>
+import {reqScoreRanking} from '../../api/index'
 export default {
   name: "Table",
+  props:["scoreRankList"],
   data() {
     return {
       // 表格区域假数据
@@ -86,7 +88,18 @@ export default {
       currentRow:null,
     };
   },
+  // props:["date"],
+  mounted(){
+    // this.getScoreRanking()
+  },
   methods:{
+    
+    // 请求所有客户排名信息列表
+    // async getScoreRanking(){
+    //   console.log(this.date)
+    //   const result = await reqScoreRanking(this.date,1,7)
+    //   console.log(result)
+    // },
     // 全局事件总线传递当前行数据回调
     handleCurrentChange(val){
       // console.log(val)
@@ -110,39 +123,21 @@ export default {
 /* hover样式修改 */
 .el-table--enable-row-hover .el-table__body tr:hover > td {
   background: rgba(252,176,24,0.1) !important;
-border: 1px solid #fad030 !important;
-  font-size: 18px;
+  border: 1px solid #fad030 !important;
+  font-size: 16px;
   color:#fff;
 }
 /* 选中行样式修改*/
-.el-table--striped .el-table__body tr.el-table__row--striped td{background:#FAFAFA}.el-table--striped .el-table__body tr.el-table__row--striped.current-row td,.el-table__body tr.current-row>td,.el-table__body tr.hover-row.current-row>td,.el-table__body tr.hover-row.el-table__row--striped.current-row>td,.el-table__body tr.hover-row.el-table__row--striped>td,.el-table__body tr.hover-row>td{background-color:orange}
-
-
-.el-table th,
-.el-table tr {
-  background: #051c2f;
-  color: #fff;
-}
-
-.el-table th.is-leaf {
-  border: 1px solid #051c2f;
-}
-.el-table td {
-  border-bottom: 1px solid #0a5a83;
-}
-.el-table--border,
-.el-table--group {
-  border: 1px solid #051c2f;
-}
-.el-table--border td,
-.el-table--border th {
-  border-right: 1px solid #0a5a83;
-}
-.el-table--border::after,
-.el-table--group::after,
-.el-table::before {
+.el-table .el-table__row{
   background-color: #051c2f;
+  color:#fff;
 }
+.has-gutter th{
+  background: #00aeef;
+}
+
+
+
 .jind {
   width: 367px;
   margin-left: 30px;
